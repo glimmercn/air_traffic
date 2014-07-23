@@ -25,6 +25,15 @@ class Trj:
     '''
     self.nodes = ns
 
+class Graph:
+  '''
+  graph class
+  '''
+ def __init__(self, points, im):
+   self.points = points
+   self.im = im
+   self.pn = len(points)
+
 def heter_interpolate(p1, p2, n, rg, params):
   '''
   insert n points between p1, p2
@@ -70,4 +79,41 @@ def random_graph(n, p=0.5):
         im[i].append(j)
         im[j].append(i)
   return points,im
+
+def add_uniform_noise(nx, ny):
+  '''
+  add uniform noise to trajectory
+  :param nx: noise on x
+  :param ny: noise on y
+  :return: trajectory with noise
+  '''
+
+def random_path(g, l, s = None):
+  '''
+  generate a path from graph g
+  :param g: graph
+  :param l: the length of the path
+  :param s: the start
+  :return:
+  '''
+  if s == None:
+    s = numpy.random.randomint(0, g.pn)
+  p = s
+  path = [p]
+  for i in range(l):
+     j = numpy.random.randomint(0, len(g.im[p]))
+     p = g.im[p][j]
+     path.append(p)
+  return path
+
+def shortest_path(g, s, t):
+  '''
+  return the shortest path from s to t in g
+  :param g:
+  :param s:
+  :param t:
+  :return:
+  '''
+
+
 
