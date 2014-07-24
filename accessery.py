@@ -5,14 +5,8 @@ Created on Jun 22, 2014
 '''
 
 import numpy
+from shapely.geometry import *
 
-class Point:
-  def __init__(self, x, y):
-    self.x = x
-    self.y = y
-  def __abs__(self, p):
-    self.x = p.x
-    self.y = p.y
 class Trj:
   '''
   trajectory class
