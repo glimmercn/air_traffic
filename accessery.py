@@ -24,6 +24,11 @@ class Graph:
   graph class
   '''
  def __init__(self, points, im):
+   '''
+   :param points:
+   :param im: incident matrix
+   :return:
+   '''
    self.points = points
    self.im = im
    self.pn = len(points)
@@ -81,6 +86,45 @@ def add_uniform_noise(nx, ny):
   :param ny: noise on y
   :return: trajectory with noise
   '''
+def add_noise(ps, xng, xp, yng = None, yp = None):
+  '''
+  add noise to a path
+  :param ps:points of path
+  :param xng:noise generator of x cordinate.
+  :param xp:parameter of x
+  :param yng:
+  :param yp:
+  :return:path with noise
+  '''
+  if yng == None:
+    yng = xng
+  if yp == None:
+    yp = xp
+  for p in ps:
+    p[0] += xng(*xp)
+    p[1] += yng(*yp)
+
+def add_cum_noise(ws, ps, xng, xp, yng = None, yp = None):
+  '''
+  add cumulative noise to trajectory
+  :param ws: weight of the noise
+  :param ps:
+  :param xng:
+  :param xp:
+  :param yng:
+  :param yp:
+  :return:
+  '''
+  l = len(ws)
+  xnoise = [0] * l
+  ynoise = [0] * l
+  for p in ps:
+    xn = xng(*xp)
+    yn = yng(*yp)
+
+    for i in range(l):
+      xn = xnoise[i] *   
+
 
 def random_path(g, l, s = None):
   '''
@@ -108,6 +152,9 @@ def shortest_path(g, s, t):
   :param t:
   :return:
   '''
+  pass
+
+
 
 
 
