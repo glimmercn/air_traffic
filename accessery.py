@@ -104,10 +104,10 @@ def add_noise(ps, xng, xp, yng = None, yp = None):
     p[0] += xng(*xp)
     p[1] += yng(*yp)
 
-def add_cum_noise(ws, ps, xng, xp, yng = None, yp = None):
+def add_cum_noise(xweight, yweight, ps, xng, xp, yng = None, yp = None):
   '''
   add cumulative noise to trajectory
-  :param ws: weight of the noise
+  :param xweight, yweight: weight of the noise
   :param ps:
   :param xng:
   :param xp:
@@ -115,16 +115,23 @@ def add_cum_noise(ws, ps, xng, xp, yng = None, yp = None):
   :param yp:
   :return:
   '''
-  l = len(ws)
-  xnoise = [0] * l
-  ynoise = [0] * l
+  xl = len(xweight)
+  yl = len(yweight)
+  xnoise = [0] * xl
+  ynoise = [0] * yl
   for p in ps:
     xn = xng(*xp)
+    for i in range(xl):
+      xn += xnoise[i] * xweight[i]
+    p[0] += xn
+    xnoise = [xn] + xnoise[:-1]
+
     yn = yng(*yp)
-
-    for i in range(l):
-      xn = xnoise[i] *   
-
+    for i in range(xl):
+      yn += ynoise[i] * yweight[i]
+    p[1] += yn
+    ynoise = [yn] + ynoise[:-1]
+  
 
 def random_path(g, l, s = None):
   '''
