@@ -20,6 +20,7 @@ class Trj:
     Constructor
     '''
     self.nodes = ns
+
   def draw(self, m, c):
     plt.plot(*zip(*self.nodes), marker=m, color=c)
 
@@ -172,6 +173,7 @@ def shortest_path(g, s, t):
   pass
 
 '''distributions'''
+
 def scaled_unif(scale):
   return numpy.random.ranf()*scale
 
