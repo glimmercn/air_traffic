@@ -1,6 +1,6 @@
 from accessory import *
 import copy
-example = 2
+example = 3
 
 if example == 1:
   g= random_graph(15, 1)
@@ -27,7 +27,7 @@ if example == 2:
     t1 = copy.deepcopy(trj)
     t2 = copy.deepcopy(trj)
     add_noise(t1.nodes, scaled_unif, [0.01])
-    add_noise(t2.nodes, scaled_unif, [0.03])
+    add_noise(t2.nodes, scaled_unif, [0.05])
     low_noise_trjs.append(t1)
     high_noise_trjs.append(t2)
   for trj in low_noise_trjs:
@@ -35,3 +35,25 @@ if example == 2:
   for trj in high_noise_trjs:
     trj.draw('.', 'r')
   plt.show()
+
+if example == 3:
+  g= random_graph(15, 1)
+  straight_trjs = []
+  for i in range(9):
+    path = random_path(g, numpy.random.randint(2, 6))
+    straight_trjs.append(interpolate_path(path, 0.03))
+  low_noise_trjs, high_noise_trjs = [], []
+  for trj in straight_trjs:
+    t1 = copy.deepcopy(trj)
+    t2 = copy.deepcopy(trj)
+    weight = [1, 0.5]
+    add_cum_noise(weight, weight,t1.nodes, scaled_unif, [.02])
+    add_cum_noise(weight, weight,t2.nodes, scaled_unif, [.05])
+    low_noise_trjs.append(t1)
+    high_noise_trjs.append(t2)
+  for trj in low_noise_trjs:
+    trj.draw('.','b')
+  for trj in high_noise_trjs:
+    trj.draw('.', 'r')
+  plt.show()
+

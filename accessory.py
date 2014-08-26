@@ -125,23 +125,27 @@ def add_cum_noise(xweight, yweight, ps, xng, xp, yng = None, yp = None):
   :param yp:
   :return:
   '''
+  if yng == None:
+    yng = xng
+  if yp == None:
+    yp = xp
   xl = len(xweight)
   yl = len(yweight)
   xnoise = [0] * xl
   ynoise = [0] * yl
   for p in ps:
-    xn = xng(*xp)
+    xnoise = [xng(*xp)] + xnoise[:-1]
+    xn = 0
     for i in range(xl):
       xn += xnoise[i] * xweight[i]
     p[0] += xn
-    xnoise = [xn] + xnoise[:-1]
 
-    yn = yng(*yp)
+    ynoise = [yng(*yp)] + ynoise[:-1]
+    yn = 0
     for i in range(xl):
       yn += ynoise[i] * yweight[i]
     p[1] += yn
-    ynoise = [yn] + ynoise[:-1]
-  
+
 
 def random_path(g, l, s = None):
   '''
@@ -175,7 +179,12 @@ def shortest_path(g, s, t):
 '''distributions'''
 
 def scaled_unif(scale):
-  return numpy.random.ranf()*scale
+  '''
+  return a random value from -scale/2 to scale/2
+  :param scale:
+  :return:
+  '''
+  return (numpy.random.ranf()-0.5)*scale
 
 if __name__ == "__main__":
   g= random_graph(15, 1)
