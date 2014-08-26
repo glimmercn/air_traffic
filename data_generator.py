@@ -1,4 +1,4 @@
-from accessery import *
+from accessory import *
 import copy
 example = 2
 
