@@ -79,6 +79,17 @@ def interpolate_path(path, slen):
     trj.append(p2)
   return Trj(trj)
 
+def truncate_path(path, i, j):
+  if i>=0 and j>i and j<=len(path):
+    return path[i:j]
+
+def random_truncate_path(path):
+  ends = sorted(numpy.random.rand(2))
+  first = int(ends[0]*len(path))
+  last = int(ends[1]*len(path))
+  return truncate_path(path, first, last)
+
+
 
 def random_graph(n, p=0.5):
   '''
