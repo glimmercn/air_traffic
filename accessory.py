@@ -24,7 +24,16 @@ class Trj:
   def draw(self, m, c):
     plt.plot(*zip(*self.nodes), marker=m, color=c)
 
+  def truncate(self, i, j):
+    if i>=0 and j>i and j<=len(self.nodes):
+      self.nodes = self.nodes[i:j]
 
+
+  def random_truncate(self):
+    ends = sorted(numpy.random.rand(2))
+    first = int(ends[0]*len(self.nodes))
+    last = int(ends[1]*len(self.nodes))
+    self.truncate(first, last)
 class Graph:
   '''
   graph class
@@ -79,15 +88,24 @@ def interpolate_path(path, slen):
     trj.append(p2)
   return Trj(trj)
 
-def truncate_path(path, i, j):
-  if i>=0 and j>i and j<=len(path):
-    return path[i:j]
-
-def random_truncate_path(path):
-  ends = sorted(numpy.random.rand(2))
-  first = int(ends[0]*len(path))
-  last = int(ends[1]*len(path))
-  return truncate_path(path, first, last)
+def random_interpolated_path(g, l, slen, s=None):
+  '''
+  generate a random interpolated path
+  :param g:
+  :param l:
+  :param slen:
+  :param s:
+  :return:a trajectory
+  '''
+  if s == None:
+    s = numpy.random.randint(0, g.pn)
+  p = s
+  path = [g.points[p]]
+  for i in range(l):
+     j = numpy.random.randint(0, len(g.im[p]))
+     p = g.im[p][j]
+     path.append(g.points[p])
+  return interpolate_path(path, slen)
 
 
 
