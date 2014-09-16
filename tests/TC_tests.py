@@ -7,8 +7,6 @@ def test_file2trj():
   data = [[40.013762,116.306629,'23:14:28'], [40.013856,116.306599, '23:14:30']]
   trj2 = Trj(data)
   
-  print(trj.nodes)
-  print(trj2.nodes)
   assert_equal(trj.nodes, trj2.nodes)
 
 
