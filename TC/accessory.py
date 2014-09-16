@@ -34,6 +34,7 @@ class Trj:
     first = int(ends[0]*len(self.nodes))
     last = int(ends[1]*len(self.nodes))
     self.truncate(first, last)
+
 class Graph:
   '''
   graph class
