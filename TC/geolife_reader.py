@@ -3,6 +3,7 @@
     September 13th'''
 
 from TC.accessory import Trj
+import os
 
 def file2trj(filename, xbound, ybound):
   '''
@@ -35,6 +36,48 @@ def file2trj(filename, xbound, ybound):
     tf.close()
     return None
   
+def oneday(Dir, dayn, xbound, ybound):
+  '''
+  collect trajectories of geolife in one day
+  '''
+  trjs = []
+
+  N = 182
+
+  for i in range(N):
+    si = str(i)
+    z = '0' * (3-len(si))
+
+    TrjDIR = Dir + z + si + '/Trajectory/'
+    flist = os.listdir(TrjDIR)
+
+    for f in flist:
+      if f[:len(dayn)] == dayn:
+        fullname = TrjDIR + f
+        trj = file2trj(fullname, xbound, ybound)
+        trjs.append(trj)
+
+  return trjs
 
 
-    
+def alltrj(Dir, dayn, xbound, ybound):
+  '''
+  collect all trajectories of geolife
+  '''
+  trjs = []
+
+  N = 182
+
+  for i in range(N):
+    si = str(i)
+    z = '0' * (3-len(si))
+
+    TrjDIR = Dir + z + si + '/Trajectory/'
+    flist = os.listdir(TrjDIR)
+
+    for f in flist:
+      fullname = TrjDIR + f
+      trj = file2trj(fullname, xbound, ybound)
+      trjs.append(trj)
+
+  return trjs
