@@ -35,11 +35,14 @@ class Trj:
     last = int(ends[1]*len(self.nodes))
     self.truncate(first, last)
 
-class portal:
-  
-  def __init__(self, center, size):
+  def __eq__(self, other):
+    return self.nodes == other.nodes
+
+class Portal:
+
+  def __init__(self, center, l):
     self.center = center
-    self.size = size
+    self.l = l
   
   '''check whether this portal hits trajecotry'''
   def hit(self, trj):
@@ -49,15 +52,21 @@ class portal:
         return True
     
     return False
+
+  def __eq__(self, other):
+    return self.center == other.center and self.l == other.l
   
   '''check whether this portal contains point p'''
   def contain(self, p):
-    c1 = self.center[0]-size/2.0 <= p[0] <= self.center[0]+size/2.0
-    c2 = self.center[1]-size/2.0 <= p[1] <= self.center[1]+size/2.0
+    c1 = self.center[0]-self.l/2.0 <= p[0] <= self.center[0]+self.l/2.0
+    c2 = self.center[1]-self.l/2.0 <= p[1] <= self.center[1]+self.l/2.0
     return c1 and c2
   
   def distance(self, ptl2):
     return eclidean(self.center, ptl2.center)
+
+  def draw():
+    pass
 
 class Graph:
   '''
@@ -239,6 +248,54 @@ def scaled_unif(scale):
   :return:
   '''
   return (numpy.random.ranf()-0.5)*scale
+
+def greedy_k_portal(trjs, box, l, k):
+  '''
+  return list of portals that greedily hit trjs.
+  '''
+  hlist = [False]*len(trjs)
+  ptls = []
+
+  for i in range(k):
+    ptls.append(greedy_one_portal(hlist, trjs, box, l))
+
+  return ptls
+
+def greedy_one_portal(hlist, trjs, box, l):
+  '''
+  return one portal to hit trjs that's not hit
+  :param hlist: the trjs that have been hit.
+  :param ptls: the portals that has been used.
+  :param box: [x1, x2] * [y1, y2]
+  '''
+  xc, yc = x1, y1
+
+  while xc < x2:
+    best = -1
+    best_ptl = None
+  
+    while yc < y2:
+      ptl = Portal((xc, yc), l)
+      count = 0
+      for i in range(len(hlist)):
+        if not hlist[i] and ptl.hit(trjs[i]):
+          count += 1
+
+      if count > best:
+        best_ptl = ptl
+        best = count
+        
+      yc += l
+
+    xc += l
+    
+  '''update hlist'''
+  for i in range(len(hlist)):
+    if not hlist[i] and best_ptl(trjs[i]):
+      hlist[i] = True
+
+  return best_ptl
+
 
 if __name__ == "__main__":
   g= random_graph(15, 1)
