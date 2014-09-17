@@ -24,7 +24,7 @@ def file2trj(filename, xbound, ybound):
       x = float(data[0])
       y = float(data[1])
 
-      if x<xbound and y<ybound:
+      if xbound[0]<x<xbound[1] and ybound[0]<y<ybound[1]:
         nodes.append([float(data[0]), float(data[1])])
 
     trj = Trj(nodes)

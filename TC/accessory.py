@@ -35,6 +35,30 @@ class Trj:
     last = int(ends[1]*len(self.nodes))
     self.truncate(first, last)
 
+class portal:
+  
+  def __init__(self, center, size):
+    self.center = center
+    self.size = size
+  
+  '''check whether this portal hits trajecotry'''
+  def hit(self, trj):
+    
+    for p in trj.nodes:
+      if self.contain(p):
+        return True
+    
+    return False
+  
+  '''check whether this portal contains point p'''
+  def contain(self, p):
+    c1 = self.center[0]-size/2.0 <= p[0] <= self.center[0]+size/2.0
+    c2 = self.center[1]-size/2.0 <= p[1] <= self.center[1]+size/2.0
+    return c1 and c2
+  
+  def distance(self, ptl2):
+    return eclidean(self.center, ptl2.center)
+
 class Graph:
   '''
   graph class

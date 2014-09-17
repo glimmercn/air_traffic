@@ -7,8 +7,8 @@ DIR = 'Data/Geolife/Data/'
 trjs = []
 N = 100
 
-xbound = 50
-ybound = 130
+xbound = [0, 50]
+ybound = [0, 130]
 dayn = '20081106'
 
 trjs = oneday(DIR, dayn, xbound, ybound)
@@ -36,3 +36,4 @@ plt.show()
 #     fullname = TrjDIR + f
 #     trj = file2trj(fullname, xbound, ybound)
 #     trjs.append(trj)
+
