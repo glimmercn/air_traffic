@@ -257,33 +257,35 @@ def greedy_k_portal(trjs, box, l, k):
   ptls = []
 
   for i in range(k):
-    ptls.append(greedy_one_portal(hlist, trjs, box, l))
+    ptls.append(greedy_one_portal(hlist, trjs, box, l, ptls))
 
   return ptls
 
-def greedy_one_portal(hlist, trjs, box, l):
+def greedy_one_portal(hlist, trjs, box, l, ptls):
   '''
   return one portal to hit trjs that's not hit
   :param hlist: the trjs that have been hit.
   :param ptls: the portals that has been used.
   :param box: [x1, x2] * [y1, y2]
   '''
-  xc, yc = x1, y1
+  xc = box[0][0]
+  print(len(ptls))
+  best = -1
+  best_ptl = None
+  while xc <= box[0][1]:
 
-  while xc < x2:
-    best = -1
-    best_ptl = None
-  
-    while yc < y2:
+    yc = box[1][0]
+    while yc <= box[1][1]:
       ptl = Portal((xc, yc), l)
-      count = 0
-      for i in range(len(hlist)):
-        if not hlist[i] and ptl.hit(trjs[i]):
-          count += 1
+      if ptl not in ptls:
+        count = 0
+        for i in range(len(hlist)):
+          if not hlist[i] and ptl.hit(trjs[i]):
+            count += 1
 
-      if count > best:
-        best_ptl = ptl
-        best = count
+        if count > best:
+          best_ptl = ptl
+          best = count
         
       yc += l
 
@@ -291,19 +293,14 @@ def greedy_one_portal(hlist, trjs, box, l):
     
   '''update hlist'''
   for i in range(len(hlist)):
-    if not hlist[i] and best_ptl(trjs[i]):
+    if not hlist[i] and best_ptl.hit(trjs[i]):
       hlist[i] = True
-
+      print(i)
   return best_ptl
 
 
+
 if __name__ == "__main__":
-  g= random_graph(15, 1)
-  path = random_path(g, 4)
-  trj = interpolate_path(path, 0.02)
-  add_noise(trj.nodes, scaled_unif, [0.01])
-  trj.draw('o','r')
-
-
+  pass
 
 
