@@ -9,7 +9,7 @@ N = 100
 
 xbound = [0, 50]
 ybound = [0, 130]
-dayn = '20081106'
+dayn = '20081208'
 
 trjs = oneday(DIR, dayn, xbound, ybound)
 

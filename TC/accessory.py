@@ -65,8 +65,19 @@ class Portal:
   def distance(self, ptl2):
     return eclidean(self.center, ptl2.center)
 
-  def draw():
-    pass
+  def draw(self, m, c):
+    cx, cy = self.center
+    d = self.l/2.0
+
+    p1 = (cx-d, cy-d)
+    p2 = (cx+d, cy-d)
+    p3 = (cx+d, cy+d)
+    p4 = (cx-d, cy+d)
+
+    points = [p1, p2, p3, p4, p1]
+
+    plt.plot(*zip(*points), marker=m, color=c)
+
 
 class Graph:
   '''
@@ -298,7 +309,11 @@ def greedy_one_portal(hlist, trjs, box, l, ptls):
       print(i)
   return best_ptl
 
+def greedy_k_pp(trjs, box, l, k):
+  pass
 
+def greedy_one_pp(hlist, trjs, box, l, ptls):
+  pass
 
 if __name__ == "__main__":
   pass
