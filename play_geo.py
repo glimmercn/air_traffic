@@ -1,5 +1,6 @@
 from TC.accessory import *
 from TC.geolife_reader import file2trj, oneday
+from TC.Portal import greedy_k_portal
 import copy
 import os
 
@@ -17,6 +18,15 @@ trjs = oneday(DIR, dayn, xbound, ybound)
 
 for trj in trjs:
   trj.draw('.', 'r')
+
+box = [(20, 40), (0, 100)]
+l = 10
+ptls = greedy_k_portal(trjs, box, l, 2)
+
+
+for ptl in ptls:
+  print(ptl.center)
+  ptl.draw('.', 'b')
 
 plt.show()
 

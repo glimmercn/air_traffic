@@ -1,4 +1,5 @@
 from TC.accessory import *
+from TC.Trajectory import *
 import copy
 example = 4
 
@@ -85,3 +86,8 @@ if example == 4:
   for trj in trjs2:
     trj.draw('.', 'r')
   plt.show()
+
+'''example 5
+read trajectories of random path in a segment arrangement.
+'''
+

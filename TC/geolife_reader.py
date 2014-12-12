@@ -2,7 +2,7 @@
     This's written by Kan Huang.
     September 13th'''
 
-from TC.accessory import Trj
+from TC.Trajectory import Trj
 import os
 
 def file2trj(filename, xbound, ybound):
