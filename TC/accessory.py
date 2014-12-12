@@ -49,6 +49,28 @@ def scaled_unif(scale):
   '''
   return (numpy.random.ranf()-0.5)*scale
 
+def read_trajectories(fname):
+  '''
+  read trajectories from a file created by CGAL code
+  :param fname:
+  :return:
+  '''
+  f = open(fname)
+  nTra = int(f.readline().strip())
+  paths = []
+  for i in range(nTra):
+    nVertex = int(f.readline().strip())
+    path = []
+
+    for j in range(nVertex):
+      l = f.readline().strip().split()
+      assert(len(l) == 2)
+      v = [float(x) for x in l]
+      path.append(v)
+
+    paths.append(path)
+
+  return paths
 
 if __name__ == "__main__":
   pass

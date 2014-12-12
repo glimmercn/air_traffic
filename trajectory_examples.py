@@ -1,7 +1,7 @@
 from TC.accessory import *
 from TC.Trajectory import *
 import copy
-example = 4
+example = 5
 
 if example == 1:
   g= random_graph(15, 1)
@@ -90,4 +90,5 @@ if example == 4:
 '''example 5
 read trajectories of random path in a segment arrangement.
 '''
-
+if example == 5:
+  paths = acc.read_trajectories('paths.txt')
