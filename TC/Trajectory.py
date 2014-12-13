@@ -30,6 +30,18 @@ class Trj:
     last = int(ends[1]*len(self.nodes))
     self.truncate(first, last)
 
+  def save_to_file(self, fname, mode):
+    ofile = open(fname, mode)
+    nNode = len(self.nodes)
+    ofile.write(str(nNode) + '\n')
+
+    for i in range(nNode):
+      x, y = self.nodes[i]
+      ofile.write(str(x) + ' ' + str(y) + '\n')
+
+    ofile.close()
+
+
   def __eq__(self, other):
     return self.nodes == other.nodes
 

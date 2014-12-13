@@ -92,3 +92,46 @@ read trajectories of random path in a segment arrangement.
 '''
 if example == 5:
   paths = acc.read_trajectories('paths.txt')
+
+  trjs = []
+  for path in paths:
+    trjs.append(interpolate_path(path, 300))
+
+  # for trj in trjs:
+  #   trj.draw('.', 'b')
+
+  arr = acc.read_arrangement('arr.txt')
+
+  for seg in arr:
+    acc.draw_segment(seg, '.', 'r')
+
+  noise_trjs = copy.deepcopy(trjs)
+
+  for trj in noise_trjs:
+    add_noise(trj.nodes, scaled_unif, [400])
+
+  for trj in noise_trjs:
+    trj.draw('.', 'b')
+
+ # plt.show()
+
+  # save trjs and nose_trjs to files
+  filename1 = '50_trajectories_without_noise.txt'
+  ofile = open(filename1, 'w')
+  ofile.write('50\n')
+  ofile.close()
+
+  for trj in trjs:
+    trj.save_to_file(filename1, 'a')
+
+
+  filename2 = '50_trajectories_with_noise.txt'
+  ofile = open(filename2, 'w')
+  ofile.write('50\n')
+  ofile.close()
+
+  for trj in noise_trjs:
+    trj.save_to_file(filename2, 'a')
+
+
+

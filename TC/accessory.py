@@ -72,6 +72,29 @@ def read_trajectories(fname):
 
   return paths
 
+def read_arrangement(fname):
+  f = open(fname)
+  nSeg = int(f.readline().strip())
+  arr = []
+
+  for i in range(nSeg):
+    l = f.readline().strip().split()
+    assert(len(l) == 4)
+    seg = [float(x) for x in l]
+    arr.append(seg)
+  return arr
+
+def draw_segment(seg, m, c):
+  '''
+  plot a segment
+  :param seg: a 4-tuple
+  :param m:
+  :param c:
+  :return:
+  '''
+  plt.plot([seg[0], seg[2]], [seg[1], seg[3]], marker = m, color = c)
+
+
 if __name__ == "__main__":
   pass
 
