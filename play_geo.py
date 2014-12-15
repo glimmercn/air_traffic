@@ -10,7 +10,7 @@ N = 100
 
 xbound = [0, 50]
 ybound = [0, 130]
-dayn = '20081208'
+dayn = '20090111'
 
 trjs = oneday(DIR, dayn, xbound, ybound)
 
@@ -19,8 +19,8 @@ trjs = oneday(DIR, dayn, xbound, ybound)
 for trj in trjs:
   trj.draw('.', 'r')
 
-box = [(20, 40), (0, 100)]
-l = 10
+box = [(39, 40), (116, 118)]
+l = 0.02
 ptls = greedy_k_portal(trjs, box, l, 2)
 
 
@@ -30,20 +30,4 @@ for ptl in ptls:
 
 plt.show()
 
-#
-#
-#
-# count = 0
-# for i in range(N+1):
-#   si = str(i)
-#   z = '0' * (3 - len(si))
-#
-#   TrjDIR = DIR + z + si + '/Trajectory/'
-#   flist = os.listdir(TrjDIR)
-#
-#   for f in flist:
-#     count += 1
-#     fullname = TrjDIR + f
-#     trj = file2trj(fullname, xbound, ybound)
-#     trjs.append(trj)
 

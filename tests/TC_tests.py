@@ -1,14 +1,8 @@
 from nose.tools import *
 from TC.geolife_reader import *
 from TC.accessory import *
+from TC.Portal import *
 
-def test_file2trj():
-  filename = '1.plt'
-  trj = file2trj(filename, [0, 100], [0, 200])
-  data = [[40.013762,116.306629], [40.013856,116.306599]]
-  trj2 = Trj(data)
-  
-  assert_equal(trj.nodes, trj2.nodes)
 
 def test_portal():
   ptl = Portal([0, 0], 5)

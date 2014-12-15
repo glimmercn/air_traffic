@@ -56,10 +56,10 @@ def greedy_k_portal(trjs, box, l, k):
 
 def greedy_one_portal(hlist, trjs, box, l, ptls):
   '''
-  return one portal to hit trjs that's not hit
+  return one portal to hit most trjs that's not hit
   :param hlist: the trjs that have been hit.
   :param ptls: the portals that has been used.
-  :param box: [x1, x2] * [y1, y2]
+  :param box: [x1, x2] * [y1, y2]. box is the area where the portal can be placed.
   '''
   xc = box[0][0]
   best = -1
