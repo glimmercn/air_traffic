@@ -25,6 +25,7 @@ if example == 2:
     trj = random_path(g, numpy.random.randint(2, 5))
     straight_trjs.append(interpolate_path(trj, 0.03))
   low_noise_trjs, high_noise_trjs = [], []
+
   for trj in straight_trjs:
     t1 = copy.deepcopy(trj)
     t2 = copy.deepcopy(trj)
@@ -154,7 +155,10 @@ if example == 6:
   noise_trjs = copy.deepcopy(trjs)
 
   for trj in noise_trjs:
-    add_noise(trj.nodes, scaled_unif, [400])
+    # add_noise(trj.nodes, scaled_unif, [400])
+    weight = [0.2, 0.5, 0.3]
+    trj.random_truncate()
+    add_cum_noise(trj.nodes, weight, scaled_unif, [400])
 
   for trj in noise_trjs:
     trj.draw('.', 'b')
