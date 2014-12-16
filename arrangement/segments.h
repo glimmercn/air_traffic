@@ -119,6 +119,13 @@ Distribution one_major_dtb(Vertex_const_handle vh)
   return dtb;
 }
 
+Distribution uniform_dtb(Vertex_const_handle vh)
+{
+  int deg = vh->degree();
+  Distribution dtb(deg, 1);
+  return dtb;
+}
+
 //from vh, generate a random path according to Distributions on the vertices of the arrangement.
 Path random_path(const Arrangement_2& arr, int length, Vertex_const_handle vh)
 {
