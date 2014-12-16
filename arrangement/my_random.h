@@ -9,7 +9,7 @@ int random_pick(const Distribution& dtb) {
     sum += dtb[i];
   }
 
-  float p = rand() / RAND_MAX * sum;
+  float p = (float)rand() / RAND_MAX * sum;
 
   for (int i = 0; i < dtb.size(); i++) {
     up += dtb[i];

@@ -42,7 +42,7 @@ int main(int argc, const char *argv[])
   if (data == 2) {
     Arrangement_2 arr;
     vector<Segment_2> segs = random_arrangement(arr, 30);
-    weighted_route(arr, one_major_dtb);
+    weighted_route(arr, uniform_dtb);
     output_arrangement(segs, "arr.data");
     
     append("200", "paths.data");
@@ -55,7 +55,7 @@ int main(int argc, const char *argv[])
       Arrangement_2::Vertex_const_iterator vh = arr.vertices_begin();
       push_iter(vh, nStep);  
       
-      int nLen = rand() % 11 + 2; 
+      int nLen = rand() % 9 + 4; 
       Path path = random_path(arr, nLen, vh);
       output_path(path, "paths.data");   
     }
