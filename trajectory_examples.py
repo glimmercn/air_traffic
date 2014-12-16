@@ -49,8 +49,8 @@ if example == 3:
     t1 = copy.deepcopy(trj)
     t2 = copy.deepcopy(trj)
     weight = [1, 0.5, 0.3, 0.1]
-    add_cum_noise(weight, weight,t1.nodes, scaled_unif, [.02])
-    add_cum_noise(weight, weight,t2.nodes, scaled_unif, [.05])
+    add_cum_noise(t1.nodes, weight, scaled_unif, [.02])
+    add_cum_noise(t2.nodes, weight, scaled_unif, [.05])
     low_noise_trjs.append(t1)
     high_noise_trjs.append(t2)
   for trj in low_noise_trjs:

@@ -65,9 +65,8 @@ void output_arrangement(vector<Segment_2>& segments, char *filename)
 
 Vertex_const_handle random_neighbour(Vertex_const_handle vh)
 {
-  int MAX = 7;
   Arrangement_2::Halfedge_around_vertex_const_circulator curr = vh->incident_halfedges();
-  int ran_step = rand() % MAX;
+  int ran_step = random_pick(vh->data());
 
   for (int i = 0; i < ran_step; i++) {
     curr++;

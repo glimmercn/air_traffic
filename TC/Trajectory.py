@@ -141,33 +141,35 @@ def add_noise(ps, xng, xp, yng = None, yp = None):
     p[0] += xng(*xp)
     p[1] += yng(*yp)
 
-def add_cum_noise(xweight, yweight, ps, xng, xp, yng = None, yp = None):
+def add_cum_noise(points, xweight, xng, xparameter, yweight=None, yng = None, yparameter = None):
   '''
   add cumulative noise to trajectory
   :param xweight, yweight: weight of the noise
-  :param ps:
+  :param points:
   :param xng:
-  :param xp:
+  :param xparameter:
   :param yng:
-  :param yp:
+  :param yparameter:
   :return:
   '''
+  if yweight == None:
+    yweight = xweight
   if yng == None:
     yng = xng
-  if yp == None:
-    yp = xp
+  if yparameter == None:
+    yparameter = xparameter
   xl = len(xweight)
   yl = len(yweight)
   xnoise = [0] * xl
   ynoise = [0] * yl
-  for p in ps:
-    xnoise = [xng(*xp)] + xnoise[:-1]
+  for p in points:
+    xnoise = [xng(*xparameter)] + xnoise[:-1]
     xn = 0
     for i in range(xl):
       xn += xnoise[i] * xweight[i]
     p[0] += xn
 
-    ynoise = [yng(*yp)] + ynoise[:-1]
+    ynoise = [yng(*yparameter)] + ynoise[:-1]
     yn = 0
     for i in range(xl):
       yn += ynoise[i] * yweight[i]
