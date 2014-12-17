@@ -2,7 +2,7 @@ from TC.accessory import *
 from TC.Trajectory import *
 import copy
 
-example = 5
+example = 2
 
 if example == 1:
   g= random_graph(15, 1)
@@ -92,19 +92,12 @@ if example == 4:
 
 
 if example == 5:
-  nPath = '20'
-  path_type = 'simple_paths'
-  pathFileName = 'arrangement/' + nPath + '_' + path_type + '.data'
-
-  paths = acc.read_trajectories(pathFileName)
+  nPath = 20
+  paths, arr = acc.data_input(nPath, 'simple', 20)
 
   trjs = []
   for path in paths:
     trjs.append(interpolate_path(path, 400))
-
-  arrSize = '20'
-  arrFileName = 'arrangement/' + arrSize + '_' + 'arr.data'
-  arr = acc.read_arrangement(arrFileName)
 
   # for seg in arr:
   #   acc.draw_segment(seg, '.', 'r')
@@ -122,10 +115,10 @@ if example == 5:
   plt.show()
 
   # save trjs and nose_trjs to files
-  filename1 = nPath + '_trajectories_without_noise.txt'
+  filename1 = str(nPath) + '_trajectories_without_noise.txt'
   save_trjs(noise_trjs, filename1)
 
 
-  filename2 = nPath + '_trajectories_with_noise.txt'
+  filename2 = str(nPath) + '_trajectories_with_noise.txt'
   save_trjs(noise_trjs, filename2)
 

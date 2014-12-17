@@ -178,6 +178,10 @@ def add_cum_noise(points, xweight, xng, xparameter, yweight=None, yng = None, yp
       yn += ynoise[i] * yweight[i]
     p[1] += yn
 
+def trjs_add_noise(trjs, noise_func, parameter):
+  for trj in trjs:
+    noise_func(trj, parameter)
+
 def random_path(g, l, s = None):
   '''
   generate a path from graph g
@@ -199,7 +203,7 @@ def random_path(g, l, s = None):
 def save_trjs(trjs, filename):
   ofile = open(filename, 'w')
   nPath = len(trjs)
-  ofile.write(nPath + '\n')
+  ofile.write(str(nPath) + '\n')
   ofile.close()
 
   for trj in trjs:

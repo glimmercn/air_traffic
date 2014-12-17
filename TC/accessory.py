@@ -115,6 +115,7 @@ def data_input(nPath, path_type, arrSize):
   paths = read_trajectories(pathFileName)
   arrFileName = 'arrangement/' + str(arrSize) + '.arr'
   arr = read_arrangement(arrFileName)
+  return paths, arr
 
 if __name__ == "__main__":
   pass

@@ -13,9 +13,9 @@ int main(int argc, const char *argv[])
   /* random simple path */
   if (data == 1) 
     data_generater(
-        "30_arr.data",
+        "30.arr",
         30,
-        "100_simple_paths.data",
+        "100_simple.paths",
         100,
         one_major_dtb,
         random_simple_path,
@@ -24,9 +24,9 @@ int main(int argc, const char *argv[])
   /*random path(not simple) */
   if (data == 2)
     data_generater(
-        "20_arr.data",
+        "20.arr",
         20,
-        "20_paths.data",
+        "20_simple.paths",
         20,
         uniform_dtb,
         random_path,
@@ -35,9 +35,9 @@ int main(int argc, const char *argv[])
   
   if (data == 3)
     data_generater(
-        "20_arr.data",
+        "20.arr",
         20,
-        "20_simple_paths.data",
+        "20_simple.paths",
         20,
         uniform_dtb,
         random_simple_path,
