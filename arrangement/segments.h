@@ -28,7 +28,7 @@ using namespace std;
 
 typedef Distribution (*Dtb_generator)(Vertex_const_handle vh);
 
-void append(string s, char *filename)
+void append(string s, char const *filename)
 {
   ofstream file;
   file.open(filename, ios::app);
@@ -36,7 +36,7 @@ void append(string s, char *filename)
   file.close();
 }
 
-void output_path(Path path, char *filename)
+void output_path(Path path, char const *filename)
 {
   ofstream file;
   file.open(filename, ios::app);
@@ -49,7 +49,7 @@ void output_path(Path path, char *filename)
   file.close();
 }
 
-void output_arrangement(vector<Segment_2>& segments, char *filename)
+void output_arrangement(vector<Segment_2>& segments, char const *filename)
 {
   ofstream file;
   file.open(filename);
@@ -166,12 +166,6 @@ Path random_simple_path(const Arrangement_2& arr, int length, Vertex_const_handl
 
   return path;
 }
-
-//return n random simple paths from arrangement
-//vector<Path> n_random_simple_path(const Arrangement_2& arr, int n)
-//{
-//  
-//}
 
 
 void push_iter(Vertex_const_handle& vh, int step) 
