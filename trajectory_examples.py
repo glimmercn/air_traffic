@@ -2,7 +2,7 @@ from TC.accessory import *
 from TC.Trajectory import *
 import copy
 
-example = 6
+example = 5
 
 if example == 1:
   g= random_graph(15, 1)
@@ -89,57 +89,11 @@ if example == 4:
     trj.draw('.', 'r')
   plt.show()
 
-'''example 5
-read trajectories of random path in a segment arrangement.
-do not use this example.
-'''
+
+
 if example == 5:
-  paths = acc.read_trajectories('paths.txt')
-
-  trjs = []
-  for path in paths:
-    trjs.append(interpolate_path(path, 300))
-
-  # for trj in trjs:
-  #   trj.draw('.', 'b')
-
-  arr = acc.read_arrangement('arr.txt')
-
-  for seg in arr:
-    acc.draw_segment(seg, '.', 'r')
-
-  noise_trjs = copy.deepcopy(trjs)
-
-  for trj in noise_trjs:
-    add_noise(trj.nodes, scaled_unif, [400])
-
-  for trj in noise_trjs:
-    trj.draw('.', 'b')
-
- # plt.show()
-
-  # save trjs and nose_trjs to files
-  filename1 = '50_trajectories_without_noise.txt'
-  ofile = open(filename1, 'w')
-  ofile.write('50\n')
-  ofile.close()
-
-  for trj in trjs:
-    trj.save_to_file(filename1, 'a')
-
-
-  filename2 = '50_trajectories_with_noise.txt'
-  ofile = open(filename2, 'w')
-  ofile.write('50\n')
-  ofile.close()
-
-  for trj in noise_trjs:
-    trj.save_to_file(filename2, 'a')
-
-
-if example == 6:
-  nPath = '50'
-  path_type = 'paths'
+  nPath = '20'
+  path_type = 'simple_paths'
   pathFileName = 'arrangement/' + nPath + '_' + path_type + '.data'
 
   paths = acc.read_trajectories(pathFileName)
@@ -152,8 +106,8 @@ if example == 6:
   arrFileName = 'arrangement/' + arrSize + '_' + 'arr.data'
   arr = acc.read_arrangement(arrFileName)
 
-  for seg in arr:
-    acc.draw_segment(seg, '.', 'r')
+  # for seg in arr:
+  #   acc.draw_segment(seg, '.', 'r')
 
   noise_trjs = copy.deepcopy(trjs)
 
@@ -170,7 +124,7 @@ if example == 6:
   # save trjs and nose_trjs to files
   filename1 = nPath + '_trajectories_without_noise.txt'
   ofile = open(filename1, 'w')
-  ofile.write('50\n')
+  ofile.write(nPath + '\n')
   ofile.close()
 
   for trj in trjs:
@@ -179,7 +133,7 @@ if example == 6:
 
   filename2 = nPath + '_trajectories_with_noise.txt'
   ofile = open(filename2, 'w')
-  ofile.write('50\n')
+  ofile.write(nPath + '\n')
   ofile.close()
 
   for trj in noise_trjs:

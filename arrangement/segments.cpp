@@ -8,7 +8,7 @@ using namespace std;
 
 int main(int argc, const char *argv[])
 {
-  int data = 2;
+  int data = 3;
 
   /* random simple path */
   if (data == 1) 
@@ -26,12 +26,24 @@ int main(int argc, const char *argv[])
     data_generater(
         "20_arr.data",
         20,
-        "50_paths.data",
-        50,
+        "20_paths.data",
+        20,
         uniform_dtb,
         random_path,
         9,
         4);
+  
+  if (data == 3)
+    data_generater(
+        "20_arr.data",
+        20,
+        "20_simple_paths.data",
+        20,
+        uniform_dtb,
+        random_simple_path,
+        9,
+        4);
+
 
   return 0;
 

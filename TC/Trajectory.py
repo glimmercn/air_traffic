@@ -25,9 +25,12 @@ class Trj:
 
 
   def random_truncate(self):
-    ends = sorted(numpy.random.rand(2))
-    first = int(ends[0]*len(self.nodes))
-    last = int(ends[1]*len(self.nodes))
+    # ends = sorted(numpy.random.rand(2))
+    # first = int(ends[0]*len(self.nodes))
+    # last = int(ends[1]*len(self.nodes))
+    ends = numpy.random.rand(2)
+    first = int(ends[0] * 0.5 * len(self.nodes))
+    last = int((ends[1] * 0.5 + 0.5) * len(self.nodes))
     self.truncate(first, last)
 
   def save_to_file(self, fname, mode):
