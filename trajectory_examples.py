@@ -138,16 +138,19 @@ if example == 5:
 
 
 if example == 6:
-  paths = acc.read_trajectories('arrangement/paths.data')
+  nPath = '50'
+  path_type = 'paths'
+  pathFileName = 'arrangement/' + nPath + '_' + path_type + '.data'
+
+  paths = acc.read_trajectories(pathFileName)
 
   trjs = []
   for path in paths:
-    trjs.append(interpolate_path(path, 300))
+    trjs.append(interpolate_path(path, 400))
 
-  # for trj in trjs:
-  #   trj.draw('.', 'b')
-
-  arr = acc.read_arrangement('arrangement/arr.data')
+  arrSize = '20'
+  arrFileName = 'arrangement/' + arrSize + '_' + 'arr.data'
+  arr = acc.read_arrangement(arrFileName)
 
   for seg in arr:
     acc.draw_segment(seg, '.', 'r')
@@ -155,7 +158,6 @@ if example == 6:
   noise_trjs = copy.deepcopy(trjs)
 
   for trj in noise_trjs:
-    # add_noise(trj.nodes, scaled_unif, [400])
     weight = [0.2, 0.5, 0.3]
     trj.random_truncate()
     add_cum_noise(trj.nodes, weight, scaled_unif, [400])
@@ -166,7 +168,7 @@ if example == 6:
   plt.show()
 
   # save trjs and nose_trjs to files
-  filename1 = '50_trajectories_without_noise.txt'
+  filename1 = nPath + '_trajectories_without_noise.txt'
   ofile = open(filename1, 'w')
   ofile.write('50\n')
   ofile.close()
@@ -175,7 +177,7 @@ if example == 6:
     trj.save_to_file(filename1, 'a')
 
 
-  filename2 = '50_trajectories_with_noise.txt'
+  filename2 = nPath + '_trajectories_with_noise.txt'
   ofile = open(filename2, 'w')
   ofile.write('50\n')
   ofile.close()

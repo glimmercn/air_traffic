@@ -39,10 +39,9 @@ void append(string s, char const *filename)
   file.close();
 }
 
-void output_path(Path path, char const *filename)
+void save_a_path(const Path& path, char const *filename)
 {
-  ofstream file;
-  file.open(filename, ios::app);
+  ofstream file(filename, ofstream::app);
   file << path.size() << endl;
 
   for (int i = 0; i < path.size(); i++) {
@@ -52,7 +51,19 @@ void output_path(Path path, char const *filename)
   file.close();
 }
 
-void output_arrangement(vector<Segment_2>& segments, char const *filename)
+void save_paths(const vector<Path>& paths, char const *filename)
+{
+  ofstream file(filename, ofstream::out);
+  file << paths.size() << endl;
+
+  for (int i = 0; i < paths.size(); i++) {
+    save_a_path(paths[i], filename);
+  }
+
+  file.close();
+}
+
+void save_arrangement(vector<Segment_2>& segments, char const *filename)
 {
   ofstream file;
   file.open(filename);
@@ -189,7 +200,27 @@ void data_generater(
     unsigned int pLenBase
     )
 {
+  Arrangement_2 arr;
+  vector<Segment_2> segs = random_arrangement(arr, arrSize);
+  weighted_route(arr, dtb_generator);
   
+  save_arrangement(segs, arrFilename);
+
+  vector<Path> paths;
+
+  for (int i = 0; i < nPath; i++) {
+    int nVertex = arr.number_of_vertices();
+    int nStep = rand() % nVertex;
+    Arrangement_2::Vertex_const_iterator vh = arr.vertices_begin();
+    push_iter(vh, nStep);
+
+    int nLen = rand() % pLenMode + pLenBase;
+    Path path = path_generator(arr, nLen, vh);
+    paths.push_back(path);
+  }
+
+  save_paths(paths, pathFileName);
+    
 }
 
 
