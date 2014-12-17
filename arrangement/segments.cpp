@@ -15,12 +15,6 @@ int main(int argc, const char *argv[])
     Arrangement_2 arr;
     vector<Segment_2> segs = random_arrangement(arr, 30);
     weighted_route(arr, one_major_dtb);
-  //  Arrangement_2::Vertex_const_iterator vh = arr.vertices_begin();
-  //  push_iter(vh, 10);  
-  //
-  //  std::vector<Vertex_const_handle> path = random_simple_path(arr, 10, vh);
-  //
-  //  output_path(path, "helloworld");
     output_arrangement(segs, "arr.data");
     
     append("100", "paths.data");
@@ -33,7 +27,7 @@ int main(int argc, const char *argv[])
       Arrangement_2::Vertex_const_iterator vh = arr.vertices_begin();
       push_iter(vh, nStep);  
       
-      int nLen = rand() % 23 + 2; 
+      int nLen = rand() % 7 + 4; 
       Path path = random_simple_path(arr, nLen, vh);
       output_path(path, "paths.data");   
     }
@@ -41,8 +35,8 @@ int main(int argc, const char *argv[])
   /*random path(not simple) */
   if (data == 2) {
     Arrangement_2 arr;
-    vector<Segment_2> segs = random_arrangement(arr, 30);
-    weighted_route(arr, uniform_dtb);
+    vector<Segment_2> segs = random_arrangement(arr, 20);
+    weighted_route(arr, one_major_dtb);
     output_arrangement(segs, "arr.data");
     
     append("200", "paths.data");

@@ -24,9 +24,12 @@ typedef Arrangement_2::Vertex_iterator                Vertex_iterator;
 typedef Arrangement_2::Halfedge_handle                Halfedge_handle;
 typedef std::vector<Vertex_const_handle>              Path;
 
+
 using namespace std;
 
-typedef Distribution (*Dtb_generator)(Vertex_const_handle vh);
+/* function pointer types */
+typedef Distribution (*Dtb_generator)(Vertex_const_handle);  
+typedef Path (*Path_generator) (const Arrangement_2&, int, Vertex_const_handle) ;
 
 void append(string s, char const *filename)
 {
@@ -175,6 +178,18 @@ void push_iter(Vertex_const_handle& vh, int step)
   }
 }
 
-
+void data_generater(
+    char const *arrFilename,
+    unsigned int arrSize,
+    char const *pathFileName,
+    unsigned int nPath,
+    Dtb_generator dtb_generator,
+    Path_generator path_generator,
+    unsigned int pLenMode,
+    unsigned int pLenBase
+    )
+{
+  
+}
 
 
