@@ -123,20 +123,9 @@ if example == 5:
 
   # save trjs and nose_trjs to files
   filename1 = nPath + '_trajectories_without_noise.txt'
-  ofile = open(filename1, 'w')
-  ofile.write(nPath + '\n')
-  ofile.close()
-
-  for trj in trjs:
-    trj.save_to_file(filename1, 'a')
+  save_trjs(noise_trjs, filename1)
 
 
   filename2 = nPath + '_trajectories_with_noise.txt'
-  ofile = open(filename2, 'w')
-  ofile.write(nPath + '\n')
-  ofile.close()
-
-  for trj in noise_trjs:
-    trj.save_to_file(filename2, 'a')
-
+  save_trjs(noise_trjs, filename2)
 

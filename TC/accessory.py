@@ -94,6 +94,27 @@ def draw_segment(seg, m, c):
   '''
   plt.plot([seg[0], seg[2]], [seg[1], seg[3]], marker = m, color = c)
 
+def draw_arrangement(arr, m, c):
+  '''
+  draw arrangement
+  :param arr:
+  :param m: marker
+  :param c: color
+  :return:
+  '''
+  for seg in arr:
+    draw_segment(seg, m, c)
+
+def save_trjs(trjs, filename):
+  ofile = open(filename, 'w')
+  ofile.write(str(len(trjs)) + '\n')
+  ofile.close()
+
+def data_input(nPath, path_type, arrSize):
+  pathFileName = 'arrangement/' + str(nPath) + '_' + path_type + '.paths'
+  paths = read_trajectories(pathFileName)
+  arrFileName = 'arrangement/' + str(arrSize) + '.arr'
+  arr = read_arrangement(arrFileName)
 
 if __name__ == "__main__":
   pass

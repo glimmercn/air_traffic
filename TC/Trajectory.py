@@ -195,3 +195,12 @@ def random_path(g, l, s = None):
      p = g.im[p][j]
      path.append(g.points[p])
   return path
+
+def save_trjs(trjs, filename):
+  ofile = open(filename, 'w')
+  nPath = len(trjs)
+  ofile.write(nPath + '\n')
+  ofile.close()
+
+  for trj in trjs:
+    trj.save_to_file(filename, 'a')
