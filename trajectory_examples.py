@@ -110,4 +110,4 @@ if example == 5:
   plt.show()
 
   # save trjs and nose_trjs to files
-  noise_trjs.save_to_file()
+  noise_trjs.save()

@@ -32,7 +32,7 @@ class Trj(object):
     last = int((ends[1] * 0.5 + 0.5) * len(self.nodes))
     self.truncate(first, last)
 
-  def save_to_file(self, fname, mode='a'):
+  def save(self, fname, mode='a'):
     ofile = open(fname, mode)
     nNode = len(self.nodes)
     ofile.write(str(nNode) + '\n')
@@ -66,15 +66,16 @@ class TrjSet(object):
     self.trjs = trjs
     self.noise_state = noise_state
 
-  def save_to_file(self):
-    filename = str(len(self.trjs)) + '_' + 'trjs' + '_' + self.noise_state + 'noise' + '.dat'
+  def save(self, filename = None):
+    if filename == None:
+      filename = str(len(self.trjs)) + '_' + 'trjs' + '_' + self.noise_state + '_noise' + '.dat'
     ofile = open(filename, 'w')
     nPath = len(self.trjs)
     ofile.write(str(nPath) + '\n')
     ofile.close()
 
     for trj in self.trjs:
-      trj.save_to_file(filename, 'a')
+      trj.save(filename, 'a')
 
   def interpolate(self, slen):
     for trj in self.trjs:
