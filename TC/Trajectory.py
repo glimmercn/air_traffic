@@ -4,7 +4,7 @@ import numpy
 import matplotlib.pyplot as plt
 import TC.accessory as acc
 
-class Trj:
+class Trj(object):
   '''
   trajectory class
   '''
@@ -23,7 +23,6 @@ class Trj:
     if i>=0 and j>i and j<=len(self.nodes):
       self.nodes = self.nodes[i:j]
 
-
   def random_truncate(self):
     # ends = sorted(numpy.random.rand(2))
     # first = int(ends[0]*len(self.nodes))
@@ -33,7 +32,7 @@ class Trj:
     last = int((ends[1] * 0.5 + 0.5) * len(self.nodes))
     self.truncate(first, last)
 
-  def save_to_file(self, fname, mode):
+  def save_to_file(self, fname, mode='a'):
     ofile = open(fname, mode)
     nNode = len(self.nodes)
     ofile.write(str(nNode) + '\n')
@@ -44,9 +43,26 @@ class Trj:
 
     ofile.close()
 
+  def interpolate(self, slen):
+    path = self.nodes
+    trj = [path[0]]
+    for i in range(len(path)-1):
+      p1 = path[i]
+      p2 = path[i+1]
+    l = acc.eclidean(p1, p2)
+    n = int(l/slen)
+    trj += interpolate_edge(p1, p2, n)
+    trj.append(p2)
+    self.nodes = trj
+
+  def add_noise(self, noise_func, params):
+    noise_func(self, params)
 
   def __eq__(self, other):
     return self.nodes == other.nodes
+
+class TrjSet(object):
+
 
 
 def interpolate_edge(p1, p2, n):
@@ -126,7 +142,7 @@ def random_graph(n, p=0.5):
         im[j].append(i)
   return acc.Graph(points, im)
 
-def add_noise(ps, xng, xp, yng = None, yp = None):
+def independent_noise(trj, xng, xp, yng = None, yp = None):
   '''
   add noise to a path
   :param ps:points of path
@@ -136,6 +152,7 @@ def add_noise(ps, xng, xp, yng = None, yp = None):
   :param yp:
   :return:path with noise
   '''
+  ps = trj.nodes
   if yng == None:
     yng = xng
   if yp == None:
@@ -144,7 +161,7 @@ def add_noise(ps, xng, xp, yng = None, yp = None):
     p[0] += xng(*xp)
     p[1] += yng(*yp)
 
-def add_cum_noise(points, xweight, xng, xparameter, yweight=None, yng = None, yparameter = None):
+def additive_noise(trj, xweight, xng, xparameter, yweight=None, yng = None, yparameter = None):
   '''
   add cumulative noise to trajectory
   :param xweight, yweight: weight of the noise
@@ -155,6 +172,7 @@ def add_cum_noise(points, xweight, xng, xparameter, yweight=None, yng = None, yp
   :param yparameter:
   :return:
   '''
+  points = trj.nodes
   if yweight == None:
     yweight = xweight
   if yng == None:
@@ -178,11 +196,24 @@ def add_cum_noise(points, xweight, xng, xparameter, yweight=None, yng = None, yp
       yn += ynoise[i] * yweight[i]
     p[1] += yn
 
+def uniform_square_noise(trj, sizeRatio):
+  '''
+  \delta = random point in a square centered at node
+  :param trj:
+  :param sizeRatio: the ratio between the distance between two points and the edge length of the square.
+  :return:
+  '''
+  assert(len(trj.nodes) > 1)
+  p1 = trj.nodes[0]
+  p2 = trj.nodes[1]
+  l = sizeRatio * acc.eclidean(p1, p2)
+  independent_noise(trj.nodes, acc.scaled_unif, l)
+
 def trjs_add_noise(trjs, noise_func, parameter):
   for trj in trjs:
     noise_func(trj, parameter)
 
-def random_path(g, l, s = None):
+def random_trj_from_graph(g, l, s = None):
   '''
   generate a path from graph g
   :param g: graph
@@ -200,6 +231,12 @@ def random_path(g, l, s = None):
      path.append(g.points[p])
   return path
 
+def random_trjs_from_graph(g, ls, s = None):
+  assert len(ls) > 0
+  trjs = []
+  for l in ls:
+    trjs.append(random_trj_from_graph(g, l, s))
+
 def save_trjs(trjs, filename):
   ofile = open(filename, 'w')
   nPath = len(trjs)
@@ -208,3 +245,4 @@ def save_trjs(trjs, filename):
 
   for trj in trjs:
     trj.save_to_file(filename, 'a')
+
