@@ -94,14 +94,16 @@ def add_pull_noise(trj, pullPower, xng, xparameter, yng=None, yparameter=None):
   if len(ps) < 3:
     add_trj_independent_noise(trj, xng, xparameter, yng, yparameter)
   else:
+    D = acc.eclidean(ps[0], ps[1])
     add_point_noise(ps[1], xng, xparameter, yng, yparameter)
 
     for i in range(2, len(ps)):
       p1, p2, p3 = ps[i-2: i+1]
       op3 = p3[:]
 
-      p3[0] = p2[0] * 2 - p1[0]
-      p3[1] = p2[1] * 2 - p1[0]
+      l = acc.eclidean(p1, p2)
+      p3[0] = p2[0] + D * (p2[0] - p1[0]) / l
+      p3[1] = p2[1] + D * (p2[1] - p1[1]) / l
       add_point_noise(p3, xng, xparameter, yng, yparameter)
 
       # pull

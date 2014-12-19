@@ -37,8 +37,8 @@ int main(int argc, const char *argv[])
     data_generater(
         "20.arr",
         20,
-        "20_simple.paths",
-        20,
+        "50_simple_uniform.paths",
+        50,
         uniform_dtb,
         random_simple_path,
         9,

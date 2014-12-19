@@ -3,19 +3,19 @@ from TC.Trajectory import *
 from TC.NoiseModel import *
 import copy
 
-example = 5
+example = 6
 
 if example == 1:
   g= random_graph(15, 1)
   for i in range(10):
     trj = random_trj_from_graph(g, 4)
     trj = trj.interpolate(0.03)
-    independent_noise(trj, scaled_unif, [0.02])
+    add_trj_independent_noise(trj, scaled_unif, [0.02])
     trj.draw('.','r')
   for i in range(15):
     trj = random_trj_from_graph(g, numpy.random.randint(2, 6))
     trj = trj.interpolate(0.03)
-    independent_noise(trj, scaled_unif, [0.05])
+    add_trj_independent_noise(trj, scaled_unif, [0.05])
     trj.draw('.','b')
   plt.show()
 
@@ -30,8 +30,8 @@ if example == 2:
   for trj in straight_trjs:
     t1 = copy.deepcopy(trj)
     t2 = copy.deepcopy(trj)
-    independent_noise(t1, scaled_unif, [0.02])
-    independent_noise(t2, scaled_unif, [0.05])
+    add_trj_independent_noise(t1, scaled_unif, [0.02])
+    add_trj_independent_noise(t2, scaled_unif, [0.05])
     low_noise_trjs.append(t1)
     high_noise_trjs.append(t2)
   for trj in low_noise_trjs:
@@ -51,8 +51,8 @@ if example == 3:
     t1 = copy.deepcopy(trj)
     t2 = copy.deepcopy(trj)
     weight = [1, 0.5, 0.3, 0.1]
-    additive_noise(t1, weight, scaled_unif, [.02])
-    additive_noise(t2, weight, scaled_unif, [.05])
+    add_cumulative_noise(t1, weight, scaled_unif, [.02])
+    add_cumulative_noise(t2, weight, scaled_unif, [.05])
     low_noise_trjs.append(t1)
     high_noise_trjs.append(t2)
   for trj in low_noise_trjs:
@@ -74,13 +74,13 @@ if example == 4:
   for i in range(t1):
     trj = random_trj_from_graph(g1, numpy.random.randint(2, 5))
     trj = trj.interpolate(0.03)
-    independent_noise(trj, scaled_unif, [0.05])
+    add_trj_independent_noise(trj, scaled_unif, [0.05])
     trj.random_truncate()
     trjs1.append(trj)
   for i in range(t2):
     trj = random_trj_from_graph(g2, numpy.random.randint(2, 5))
     trj = trj.interpolate(0.03)
-    independent_noise(trj, scaled_unif, [0.05])
+    add_trj_independent_noise(trj, scaled_unif, [0.05])
     trj.random_truncate()
     trjs2.append(trj)
 
@@ -93,20 +93,49 @@ if example == 4:
 
 
 if example == 5:
-  nPath = 20
-  trjs, arr = data_input(nPath, 'simple', 20)
+  nPath = 50
+  arrSize = 20
+  trjs, arr = data_input(nPath, 'simple_uniform', arrSize)
   trjs.interpolate(400)
 
   # for seg in arr:
   #   acc.draw_segment(seg, '.', 'r')
-  draw_arrangement(arr, 'o', 'r')
+  # draw_arrangement(arr, 'o', 'r')
   noise_trjs = copy.deepcopy(trjs)
   noise_trjs.random_truncate()
-  weight = [.2, .5, .3]
-  params = weight, scaled_unif, [300]
-  noise_trjs.add_noise(additive_noise, params)
-  noise_trjs.visualize('.', 'b')
+  weight = [.2, .6, .2]
+  params = weight, scaled_unif, [700]
+  noise_trjs.add_noise(add_cumulative_noise, params)
+  noise_trjs.visualize('', 'b')
 
+  plt.show()
+
+  # save trjs and nose_trjs to files
+  noise_trjs.save()
+
+if example == 6:
+  nPath = 50
+  arrSize = 20
+  trjs, arr = data_input(nPath, 'simple_uniform', arrSize)
+  trjs.interpolate(400)
+
+  # for seg in arr:
+  #   acc.draw_segment(seg, '.', 'r')
+  # draw_arrangement(arr, 'o', 'r')
+  noise_trjs = copy.deepcopy(trjs)
+  noise_trjs.random_truncate()
+  noise_trjs2 = copy.deepcopy(noise_trjs)
+
+  params = 0.8, scaled_unif, [900]
+  noise_trjs.add_noise(add_pull_noise, params)
+  noise_trjs.visualize('', 'b')
+
+  weight = [.2, .6, .2]
+  params = weight, scaled_unif, [900]
+  noise_trjs2.add_noise(add_cumulative_noise, params)
+  noise_trjs2.visualize('', 'r')
+
+  draw_arrangement(arr, '*', 'green')
   plt.show()
 
   # save trjs and nose_trjs to files
