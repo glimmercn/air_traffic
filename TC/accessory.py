@@ -52,36 +52,6 @@ def scaled_unif(scale):
   return (numpy.random.ranf()-0.5)*scale
 
 
-
-
-def draw_segment(seg, m, c):
-  '''
-  plot a segment
-  :param seg: a 4-tuple
-  :param m:
-  :param c:
-  :return:
-  '''
-  plt.plot([seg[0], seg[2]], [seg[1], seg[3]], marker = m, color = c)
-
-def draw_arrangement(arr, m, c):
-  '''
-  draw arrangement
-  :param arr:
-  :param m: marker
-  :param c: color
-  :return:
-  '''
-  for seg in arr:
-    draw_segment(seg, m, c)
-
-def save_trjs(trjs, filename):
-  ofile = open(filename, 'w')
-  ofile.write(str(len(trjs)) + '\n')
-  ofile.close()
-
-
-
 def random_trj_from_graph(g, l, s = None):
   '''
   generate a path from graph g
@@ -105,6 +75,7 @@ def random_trjs_from_graph(g, ls, s = None):
   trjs = []
   for l in ls:
     trjs.append(random_trj_from_graph(g, l, s))
+
 def interpolate_edge(p1, p2, n):
   '''
   insert n points between p1, p2

@@ -3,6 +3,7 @@ __author__ = 'kan'
 import numpy
 import matplotlib.pyplot as plt
 import TC.accessory as acc
+from TC.Arrangement import Arrangement
 
 class Trj(object):
   '''
@@ -122,21 +123,13 @@ def read_trjs(fname):
 
   return TrjSet(paths)
 
-def read_arrangement(fname):
-  f = open(fname)
-  nSeg = int(f.readline().strip())
-  arr = []
-
-  for i in range(nSeg):
-    l = f.readline().strip().split()
-    assert(len(l) == 4)
-    seg = [float(x) for x in l]
-    arr.append(seg)
-  return arr
 
 def data_input(nPath, path_type, arrSize):
   pathFileName = 'arrangement/' + str(nPath) + '_' + path_type + '.paths'
   paths = read_trjs(pathFileName)
+
   arrFileName = 'arrangement/' + str(arrSize) + '.arr'
-  arr = read_arrangement(arrFileName)
+  arr = Arrangement()
+  arr.input_from_file(arrFileName)
+
   return paths, arr

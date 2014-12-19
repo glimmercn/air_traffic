@@ -135,7 +135,7 @@ if example == 6:
   noise_trjs2.add_noise(add_cumulative_noise, params)
   noise_trjs2.visualize('', 'r')
 
-  draw_arrangement(arr, '*', 'green')
+  # arr.visualize('*', 'green')
   plt.show()
 
   # save trjs and nose_trjs to files
