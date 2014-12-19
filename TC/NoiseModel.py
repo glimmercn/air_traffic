@@ -79,4 +79,31 @@ def add_cumulative_noise(trj, xweight, xng, xparameter, yweight=None, yng = None
       yn += ynoise[i] * yweight[i]
     p[1] += yn
 
+def add_pull_noise(trj, pullPower, xng, xparameter, yng=None, yparameter=None):
+  '''
+  noise model. trajectory has the momentone to keep the direction and pullPower
+  represents how much it will be pulled by the original trajectory. we expect it
+  to be smoother than independent noise
+  '''
+  if yng == None:
+    yng = xng
+  if yparameter == None:
+    yparameter = xparameter
 
+  ps = trj.nodes
+  if len(ps) < 3:
+    add_trj_independent_noise(trj, xng, xparameter, yng, yparameter)
+  else:
+    add_point_noise(ps[1], xng, xparameter, yng, yparameter)
+
+    for i in range(2, len(ps)):
+      p1, p2, p3 = ps[i-2: i+1]
+      op3 = p3[:]
+
+      p3[0] = p2[0] * 2 - p1[0]
+      p3[1] = p2[1] * 2 - p1[0]
+      add_point_noise(p3, xng, xparameter, yng, yparameter)
+
+      # pull
+      p3[0] = pullPower * op3[0] + (1 - pullPower) * p3[0]
+      p3[1] = pullPower * op3[1] + (1 - pullPower) * p3[1]
