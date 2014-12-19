@@ -3,7 +3,15 @@ __author__ = 'kan'
 import TC.accessory as acc
 import TC.Trajectory
 
-def independent_noise(trj, xng, xp, yng = None, yp = None):
+def add_point_noise(point, xng, xp, yng = None, yp = None):
+  if yng == None:
+    yng = xng
+  if yp == None:
+    yp = xp
+  point[0] += xng(*xp)
+  point[1] += yng(*yp)
+
+def add_trj_independent_noise(trj, xng, xp, yng = None, yp = None):
   '''
   add noise to a path
   :param ps:points of path
@@ -19,10 +27,22 @@ def independent_noise(trj, xng, xp, yng = None, yp = None):
   if yp == None:
     yp = xp
   for p in ps:
-    p[0] += xng(*xp)
-    p[1] += yng(*yp)
+    add_point_noise(p, xng, xp)
 
-def additive_noise(trj, xweight, xng, xparameter, yweight=None, yng = None, yparameter = None):
+def add_uniform_square_noise(trj, sizeRatio):
+  '''
+  this is a special kind of add_trj_independent_noise()
+  :param trj:
+  :param sizeRatio: the ratio between the distance between two points and the edge length of the square.
+  :return:
+  '''
+  assert(len(trj.nodes) > 1)
+  p1 = trj.nodes[0]
+  p2 = trj.nodes[1]
+  l = sizeRatio * acc.eclidean(p1, p2)
+  add_trj_independent_noise(trj, acc.scaled_unif, l)
+
+def add_cumulative_noise(trj, xweight, xng, xparameter, yweight=None, yng = None, yparameter = None):
   '''
   add cumulative noise to trajectory
   :param xweight, yweight: weight of the noise
@@ -40,10 +60,12 @@ def additive_noise(trj, xweight, xng, xparameter, yweight=None, yng = None, ypar
     yng = xng
   if yparameter == None:
     yparameter = xparameter
+
   xl = len(xweight)
   yl = len(yweight)
   xnoise = [0] * xl
   ynoise = [0] * yl
+
   for p in points:
     xnoise = [xng(*xparameter)] + xnoise[:-1]
     xn = 0
@@ -57,16 +79,4 @@ def additive_noise(trj, xweight, xng, xparameter, yweight=None, yng = None, ypar
       yn += ynoise[i] * yweight[i]
     p[1] += yn
 
-def uniform_square_noise(trj, sizeRatio):
-  '''
-  \delta = random point in a square centered at node
-  :param trj:
-  :param sizeRatio: the ratio between the distance between two points and the edge length of the square.
-  :return:
-  '''
-  assert(len(trj.nodes) > 1)
-  p1 = trj.nodes[0]
-  p2 = trj.nodes[1]
-  l = sizeRatio * acc.eclidean(p1, p2)
-  independent_noise(trj.nodes, acc.scaled_unif, l)
 
