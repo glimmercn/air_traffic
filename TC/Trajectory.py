@@ -62,13 +62,13 @@ class Trj(object):
     return self.nodes == other.nodes
 
 class TrjSet(object):
-  def __init__(self, trjs, noise_state):
+  def __init__(self, trjs):
     self.trjs = trjs
-    self.noise_state = noise_state
+    self.noise_type= None
 
   def save(self, filename = None):
     if filename == None:
-      filename = str(len(self.trjs)) + '_' + 'trjs' + '_' + self.noise_state + '_noise' + '.dat'
+      filename = str(len(self.trjs)) + '_' + 'trjs' + '_' + self.noise_type + '.dat'
     ofile = open(filename, 'w')
     nPath = len(self.trjs)
     ofile.write(str(nPath) + '\n')
@@ -82,7 +82,7 @@ class TrjSet(object):
       trj.interpolate(slen)
 
   def add_noise(self, noise_func, params):
-    self.noise_state = 'with'
+    self.noise_type = noise_func.name
     for trj in self.trjs:
       trj.add_noise(noise_func, params)
 
@@ -95,7 +95,7 @@ class TrjSet(object):
       trj.random_truncate()
 
   def __eq__(self, other):
-    b1 = self.noise_state == other.noise_state
+    b1 = self.noise_type == other.noise_state
     b2 = self.trjs == other.trjs
     return b1 and b2
 
@@ -120,7 +120,7 @@ def read_trjs(fname):
 
     paths.append(Trj(path))
 
-  return TrjSet(paths, 'without')
+  return TrjSet(paths)
 
 def read_arrangement(fname):
   f = open(fname)
