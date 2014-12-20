@@ -7,16 +7,27 @@ example = 6
 
 if example == 1:
   g= random_graph(15, 1)
+  trjs = []
+
   for i in range(10):
     trj = random_trj_from_graph(g, 4)
-    trj = trj.interpolate(0.03)
-    add_trj_independent_noise(trj, scaled_unif, [0.02])
-    trj.draw('.','r')
+    trjs.append(Trj(trj))
+
+  trjSet = TrjSet(trjs)
+  trjSet.interpolate(0.03)
+  trjSet.add_noise(add_uniform_square_noise, [0.6])
+  trjSet.visualize('.', 'red')
+
+  trjs = []
   for i in range(15):
     trj = random_trj_from_graph(g, numpy.random.randint(2, 6))
-    trj = trj.interpolate(0.03)
-    add_trj_independent_noise(trj, scaled_unif, [0.05])
-    trj.draw('.','b')
+    trjs.append(Trj(trj))
+
+  trjset2 = TrjSet(trjs)
+  trjset2.interpolate(0.03)
+  trjset2.add_noise(add_uniform_square_noise, [1])
+  trjset2.visualize('', 'blue')
+
   plt.show()
 
 if example == 2:

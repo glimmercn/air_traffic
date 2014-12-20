@@ -42,7 +42,7 @@ def add_uniform_square_noise(trj, sizeRatio):
   p1 = trj.nodes[0]
   p2 = trj.nodes[1]
   l = sizeRatio * acc.eclidean(p1, p2)
-  add_trj_independent_noise(trj, acc.scaled_unif, l)
+  add_trj_independent_noise(trj, acc.scaled_unif, [l])
 
 add_uniform_square_noise.name = 'uniform_square_noise'
 
