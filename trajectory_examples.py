@@ -3,7 +3,7 @@ from TC.Trajectory import *
 from TC.NoiseModel import *
 import copy
 
-example = 6
+example = 3
 
 if example == 1:
   g= random_graph(15, 1)
@@ -54,22 +54,26 @@ if example == 2:
 if example == 3:
   g= random_graph(20, 1)
   straight_trjs = []
+
   for i in range(10):
     trj = random_trj_from_graph(g, numpy.random.randint(2, 5))
-    straight_trjs.append(trj.interpolate(0.03))
-  low_noise_trjs, high_noise_trjs = [], []
-  for trj in straight_trjs:
-    t1 = copy.deepcopy(trj)
-    t2 = copy.deepcopy(trj)
-    weight = [1, 0.5, 0.3, 0.1]
-    add_cumulative_noise(t1, weight, scaled_unif, [.02])
-    add_cumulative_noise(t2, weight, scaled_unif, [.05])
-    low_noise_trjs.append(t1)
-    high_noise_trjs.append(t2)
-  for trj in low_noise_trjs:
-    trj.draw('.','b')
-  for trj in high_noise_trjs:
-    trj.draw('.', 'r')
+    straight_trjs.append(Trj(trj))
+
+  straightTrjSet = TrjSet(straight_trjs)
+  straightTrjSet.interpolate(0.03)
+
+  weight = [1, 0.5, 0.3, 0.1]
+
+  low_noise_trjs = copy.deepcopy(straightTrjSet)
+  low_params = weight, scaled_unif, [.02]
+  low_noise_trjs.add_noise(add_cumulative_noise, low_params)
+  low_noise_trjs.visualize('.', 'b')
+
+  high_noise_trjs = copy.deepcopy(straightTrjSet)
+  high_params = weight, scaled_unif, [.05]
+  high_noise_trjs.add_noise(add_cumulative_noise, high_params)
+  high_noise_trjs.visualize('.', 'r')
+
   plt.show()
 
 # example of G1 vs G2
