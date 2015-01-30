@@ -189,14 +189,14 @@ void push_iter(Vertex_const_handle& vh, int step)
   }
 }
 
-void data_generater(
-    char const *arrFilename,
-    unsigned int arrSize,
-    char const *pathFileName,
-    unsigned int nPath,
+void generate_data(
+    char const *arrFilename,   //the file saves the arrangement.
+    unsigned int arrSize,      //the number of segments in the arrangement.
+    char const *pathFileName,  //the file saves the random path.
+    unsigned int nPath,        //the number of paths will be generated.
     Dtb_generator dtb_generator,
     Path_generator path_generator,
-    unsigned int pLenMode,
+    unsigned int pLenMod,    //the length (the number of vertices) of a path is a random number in [0, 1, ..., pLenMod-1] plus pLenBase.
     unsigned int pLenBase
     )
 {
@@ -214,7 +214,7 @@ void data_generater(
     Arrangement_2::Vertex_const_iterator vh = arr.vertices_begin();
     push_iter(vh, nStep);
 
-    int nLen = rand() % pLenMode + pLenBase;
+    int nLen = rand() % pLenMod + pLenBase;
     Path path = path_generator(arr, nLen, vh);
     paths.push_back(path);
   }

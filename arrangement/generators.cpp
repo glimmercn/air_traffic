@@ -12,7 +12,7 @@ int main(int argc, const char *argv[])
 
   /* random simple path */
   if (data == 1) 
-    data_generater(
+    generate_data(
         "30.arr",
         30,
         "100_simple.paths",
@@ -23,7 +23,7 @@ int main(int argc, const char *argv[])
         4);
   /*random path(not simple) */
   if (data == 2)
-    data_generater(
+    generate_data(
         "20.arr",
         20,
         "20_simple.paths",
@@ -34,7 +34,7 @@ int main(int argc, const char *argv[])
         4);
   
   if (data == 3)
-    data_generater(
+    generate_data(
         "20.arr",
         20,
         "50_simple_uniform.paths",
