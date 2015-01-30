@@ -38,11 +38,11 @@ def add_uniform_square_noise(trj, sizeRatio):
   :param sizeRatio: the ratio between the distance between two points and the edge length of the square.
   :return:
   '''
-  assert(len(trj.nodes) > 1)
-  p1 = trj.nodes[0]
-  p2 = trj.nodes[1]
-  l = sizeRatio * acc.eclidean(p1, p2)
-  add_trj_independent_noise(trj, acc.scaled_unif, [l])
+  if len(trj.nodes) > 1:
+    p1 = trj.nodes[0]
+    p2 = trj.nodes[1]
+    l = sizeRatio * acc.eclidean(p1, p2)
+    add_trj_independent_noise(trj, acc.scaled_unif, [l])
 
 add_uniform_square_noise.name = 'uniform_square_noise'
 

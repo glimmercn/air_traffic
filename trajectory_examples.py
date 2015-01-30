@@ -3,7 +3,7 @@ from TC.Trajectory import *
 from TC.NoiseModel import *
 import copy
 
-example = 3
+example = 7
 
 if example == 1:
   g= random_graph(15, 1)
@@ -134,20 +134,19 @@ if example == 6:
   trjs, arr = data_input(nPath, 'simple_uniform', arrSize)
   trjs.interpolate(400)
 
-  # for seg in arr:
-  #   acc.draw_segment(seg, '.', 'r')
-  # draw_arrangement(arr, 'o', 'r')
   noise_trjs = copy.deepcopy(trjs)
   noise_trjs.random_truncate()
   noise_trjs2 = copy.deepcopy(noise_trjs)
 
-  params = 0.8, scaled_unif, [900]
+  params = 0.6, scaled_unif, [600]
   noise_trjs.add_noise(add_pull_noise, params)
   noise_trjs.visualize('', 'b')
 
-  weight = [.2, .6, .2]
-  params = weight, scaled_unif, [900]
-  noise_trjs2.add_noise(add_cumulative_noise, params)
+  # weight = [0.2, .8, .0]
+  # params = weight, scaled_unif, [900]
+  # noise_trjs2.add_noise(add_cumulative_noise, params)
+
+  noise_trjs2.add_noise(add_uniform_square_noise, [1])
   noise_trjs2.visualize('', 'r')
 
   # arr.visualize('*', 'green')
@@ -156,3 +155,26 @@ if example == 6:
   # save trjs and nose_trjs to files
   noise_trjs.save()
 
+if example == 7:
+  nPath = 50
+  arrSize = 20
+  trjs, arr = data_input(nPath, 'simple_uniform', arrSize)
+  trjs.interpolate(400)
+
+  noise_trjs = copy.deepcopy(trjs)
+  noise_trjs.random_truncate()
+  noise_trjs2 = copy.deepcopy(noise_trjs)
+
+  params = 0.7, scaled_unif, [600]
+  noise_trjs.add_noise(add_pull_noise, params)
+  noise_trjs.visualize('', 'b')
+
+  params = 0.5, scaled_unif, [600]
+  noise_trjs2.add_noise(add_pull_noise, params)
+  noise_trjs2.visualize('', 'r')
+
+  # arr.visualize('', 'green')
+  plt.show()
+
+  # save trjs and nose_trjs to files
+  noise_trjs.save()
