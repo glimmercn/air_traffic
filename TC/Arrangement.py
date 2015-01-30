@@ -5,7 +5,7 @@ class Arrangement(object):
   def __init__(self):
     self.segments = None
 
-  def input_from_file(self, fname):
+  def __init__(self, fname):
     f = open(fname)
     nSeg = int(f.readline().strip())
     segs = []

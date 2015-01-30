@@ -15,7 +15,7 @@ if example == 1:
 
   trjSet = TrjSet(trjs)
   trjSet.interpolate(0.03)
-  trjSet.add_noise(add_uniform_square_noise, [0.6])
+  trjSet.add_noise(uniform_square_noise, [0.6])
   trjSet.visualize('.', 'red')
 
   trjs = []
@@ -25,7 +25,7 @@ if example == 1:
 
   trjset2 = TrjSet(trjs)
   trjset2.interpolate(0.03)
-  trjset2.add_noise(add_uniform_square_noise, [1])
+  trjset2.add_noise(uniform_square_noise, [1])
   trjset2.visualize('', 'blue')
 
   plt.show()
@@ -66,12 +66,12 @@ if example == 3:
 
   low_noise_trjs = copy.deepcopy(straightTrjSet)
   low_params = weight, scaled_unif, [.02]
-  low_noise_trjs.add_noise(add_cumulative_noise, low_params)
+  low_noise_trjs.add_noise(cumulative_noise, low_params)
   low_noise_trjs.visualize('.', 'b')
 
   high_noise_trjs = copy.deepcopy(straightTrjSet)
   high_params = weight, scaled_unif, [.05]
-  high_noise_trjs.add_noise(add_cumulative_noise, high_params)
+  high_noise_trjs.add_noise(cumulative_noise, high_params)
   high_noise_trjs.visualize('.', 'r')
 
   plt.show()
@@ -120,7 +120,7 @@ if example == 5:
   noise_trjs.random_truncate()
   weight = [.2, .6, .2]
   params = weight, scaled_unif, [700]
-  noise_trjs.add_noise(add_cumulative_noise, params)
+  noise_trjs.add_noise(cumulative_noise, params)
   noise_trjs.visualize('', 'b')
 
   plt.show()
@@ -139,14 +139,14 @@ if example == 6:
   noise_trjs2 = copy.deepcopy(noise_trjs)
 
   params = 0.6, scaled_unif, [600]
-  noise_trjs.add_noise(add_pull_noise, params)
+  noise_trjs.add_noise(pull_noise, params)
   noise_trjs.visualize('', 'b')
 
   # weight = [0.2, .8, .0]
   # params = weight, scaled_unif, [900]
   # noise_trjs2.add_noise(add_cumulative_noise, params)
 
-  noise_trjs2.add_noise(add_uniform_square_noise, [1])
+  noise_trjs2.add_noise(uniform_square_noise, [1])
   noise_trjs2.visualize('', 'r')
 
   # arr.visualize('*', 'green')
@@ -166,11 +166,11 @@ if example == 7:
   noise_trjs2 = copy.deepcopy(noise_trjs)
 
   params = 0.7, scaled_unif, [600]
-  noise_trjs.add_noise(add_pull_noise, params)
+  noise_trjs.add_noise(pull_noise, params)
   noise_trjs.visualize('', 'b')
 
   params = 0.5, scaled_unif, [600]
-  noise_trjs2.add_noise(add_pull_noise, params)
+  noise_trjs2.add_noise(pull_noise, params)
   noise_trjs2.visualize('', 'r')
 
   # arr.visualize('', 'green')

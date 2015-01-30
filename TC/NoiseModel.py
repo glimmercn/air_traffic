@@ -31,7 +31,7 @@ def add_trj_independent_noise(trj, xng, xp, yng = None, yp = None):
 
 add_trj_independent_noise.name = 'independent_noise'
 
-def add_uniform_square_noise(trj, sizeRatio):
+def uniform_square_noise(trj, sizeRatio):
   '''
   this is a special kind of add_trj_independent_noise()
   :param trj:
@@ -44,9 +44,9 @@ def add_uniform_square_noise(trj, sizeRatio):
     l = sizeRatio * acc.eclidean(p1, p2)
     add_trj_independent_noise(trj, acc.scaled_unif, [l])
 
-add_uniform_square_noise.name = 'uniform_square_noise'
+uniform_square_noise.name = 'uniform_square_noise'
 
-def add_cumulative_noise(trj, xweight, xng, xparameter, yweight=None, yng = None, yparameter = None):
+def cumulative_noise(trj, xweight, xng, xparameter, yweight=None, yng = None, yparameter = None):
   '''
   add cumulative noise to trajectory
   :param xweight, yweight: weight of the noise
@@ -83,9 +83,9 @@ def add_cumulative_noise(trj, xweight, xng, xparameter, yweight=None, yng = None
       yn += ynoise[i] * yweight[i]
     p[1] += yn
 
-add_cumulative_noise.name = 'cumulative_noise'
+cumulative_noise.name = 'cumulative_noise'
 
-def add_pull_noise(trj, pullPower, xng, xparameter, yng=None, yparameter=None):
+def pull_noise(trj, pullPower, xng, xparameter, yng=None, yparameter=None):
   '''
   noise model. trajectory has the momentone to keep the direction and pullPower
   represents how much it will be pulled by the original trajectory. we expect it
@@ -116,4 +116,4 @@ def add_pull_noise(trj, pullPower, xng, xparameter, yng=None, yparameter=None):
       p3[0] = pullPower * op3[0] + (1 - pullPower) * p3[0]
       p3[1] = pullPower * op3[1] + (1 - pullPower) * p3[1]
 
-add_pull_noise.name = 'pull_noise'
+pull_noise.name = 'pull_noise'

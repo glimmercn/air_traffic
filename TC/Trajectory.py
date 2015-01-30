@@ -57,7 +57,6 @@ class Trj(object):
     self.nodes = trj
 
   def add_noise(self, noise_func, params):
-    print(len(self.nodes))
     noise_func(self, *params)
 
   def __eq__(self, other):
