@@ -28,7 +28,7 @@ def draw_segment(seg, m, c):
   :param seg: a 4-tuple
   :param m:
   :param c:
-  :return:
+  :return: none
   '''
   plt.plot([seg[0], seg[2]], [seg[1], seg[3]], marker = m, color = c)
 
