@@ -94,15 +94,15 @@ vector<Segment_2> random_arrangement(Arrangement_2& arr, int n)
 {
   //random generator
   int MIN = 0;
-  int MAX = 100000;
+  int MAX = 800;
 
   //generate a list of segments
   vector<Segment_2> segments;
   for (int i=0; i < n; i++) {
-    double x1 = rand() / MAX;
-    double y1 = rand() / MAX;
-    double x2 = rand() / MAX;
-    double y2 = rand() / MAX;
+    double x1 = rand() % MAX;
+    double y1 = rand() % MAX;
+    double x2 = rand() % MAX;
+    double y2 = rand() % MAX;
     Segment_2 s(Point_2(x1, y1), Point_2(x2, y2));
     segments.push_back(s);
   }

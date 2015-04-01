@@ -4,6 +4,7 @@ import numpy
 import matplotlib.pyplot as plt
 import TC.accessory as acc
 from TC.Arrangement import Arrangement
+from PyQt4 import QtGui, QtCore
 
 class Trj(object):
   '''
@@ -16,6 +17,12 @@ class Trj(object):
     Constructor
     '''
     self.nodes = ns
+
+  def gui_draw(self, painter):
+    for i in range(len(self.nodes) - 1):
+      p1, p2 = self.nodes[i], self.nodes[i+1]
+      print("p1 = " + str(p1[0]) + ' ' + str(p1[1]))
+      painter.drawLine(p1[0], p1[1], p2[0], p2[1])
 
   def draw(self, m, c):
     plt.plot(*zip(*self.nodes), marker=m, color=c)
