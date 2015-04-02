@@ -8,12 +8,11 @@ from TC.accessory import *
 from TC.NoiseModel import *
 from TC.Trajectory import *
 
-pathFileName = 'arrangement/100_simple.paths'
-arrFileName = 'arrangement/30.arr'
+from copy import deepcopy
 
 pathSet = None
-trjSet = None
-arr = None
+trajecotries= None
+
 
 
 
@@ -29,24 +28,31 @@ class MainWindow(QtGui.QWidget):
       self.loadButton = QtGui.QPushButton('Load Path File')
       self.connect(self.loadButton, QtCore.SIGNAL("pressed()"), self.loadPath)
 
-      self.drawPathsButton = QtGui.QPushButton('Draw Paths')
-      review = QtGui.QLabel('Review')
+      self.drawPathsButton = QtGui.QPushButton('Draw')
+      self.canvas = Canvas()
+      self.connect(self.drawPathsButton, QtCore.SIGNAL('pressed()'), self.canvas.repaint)
 
-      self.loadEdit = QtGui.QLineEdit()
+      self.loadEdit = QtGui.QLineEdit("arrangement/100_simple.paths")
       authorEdit = QtGui.QLineEdit()
-      reviewEdit = Canvas()
+
+      noiseLabel = QtGui.QLabel('Noise Name:')
+      self.noiseEdit = QtGui.QLineEdit("Put the name of noise here")
+
+      self.truncButton = QtGui.QPushButton('Truncate')
+      self.connect(self.truncButton, QtCore.SIGNAL('pressed()'), self.truncate)
 
       grid = QtGui.QGridLayout()
       grid.setSpacing(10)
 
       grid.addWidget(self.loadButton, 1, 0)
       grid.addWidget(self.loadEdit, 1, 1)
-
+      grid.addWidget(self.noiseEdit, 3, 1)
       grid.addWidget(self.drawPathsButton, 2, 0)
       grid.addWidget(authorEdit, 2, 1)
 
-      grid.addWidget(review, 3, 0)
-      grid.addWidget(reviewEdit, 3, 1, 5, 1)
+      grid.addWidget(noiseLabel, 3, 0)
+      grid.addWidget(self.truncButton, 4, 0)
+      grid.addWidget(self.canvas, 6, 1, 8, 1)
 
       self.setLayout(grid)
 
@@ -57,9 +63,22 @@ class MainWindow(QtGui.QWidget):
 
 
     def loadPath(self):
+      global trajecotries, pathSet
       pathFileName = self.loadEdit.text()
-      trjSet = read_trjs(pathFileName)
-      print(len(trjSet.trjs))
+      pathSet = read_trjs(pathFileName)
+      ''' the paths will be interpolated immediately.
+      pathSet is a copy for reset.
+      trjSet is a copy that functions will work on.
+      '''
+      l = 10
+      pathSet.interpolate(l)
+      trajecotries = deepcopy(pathSet)
+
+    def truncate(self):
+      global trajecotries
+      trajecotries.random_truncate()
+      self.canvas.repaint()
+
 
 class Canvas(QtGui.QWidget):
 
@@ -81,13 +100,12 @@ class Canvas(QtGui.QWidget):
         qp.end()
 
     def drawTrj(self, qp):
+      global trajecotries
+      pen = QtGui.QPen(QtCore.Qt.black, 2, QtCore.Qt.SolidLine)
+      qp.setPen(pen)
 
-        pen = QtGui.QPen(QtCore.Qt.black, 2, QtCore.Qt.SolidLine)
-        qp.setPen(pen)
-
-        if trjSet:
-          for trj in trjSet.trjs:
-            trj.gui_draw(qp)
+      for trj in trajecotries.trjs:
+        trj.gui_draw(qp)
 
 
 def main():

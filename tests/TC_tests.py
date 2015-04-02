@@ -3,7 +3,6 @@ from TC.geolife_reader import *
 from TC.accessory import *
 from TC.Portal import *
 
-
 def test_portal():
   ptl = Portal([0, 0], 5)
 
