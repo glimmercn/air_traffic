@@ -33,7 +33,6 @@ class MainWindow(QtGui.QWidget):
       self.connect(self.drawPathsButton, QtCore.SIGNAL('pressed()'), self.canvas.repaint)
 
       self.loadEdit = QtGui.QLineEdit("arrangement/100_simple.paths")
-      authorEdit = QtGui.QLineEdit()
 
       noiseLabel = QtGui.QLabel('Noise Name:')
       self.noiseEdit = QtGui.QLineEdit("Put the name of noise here")
@@ -41,17 +40,21 @@ class MainWindow(QtGui.QWidget):
       self.truncButton = QtGui.QPushButton('Truncate')
       self.connect(self.truncButton, QtCore.SIGNAL('pressed()'), self.truncate)
 
+      self.NoiseButton = QtGui.QPushButton('Add Noise')
+      self.connect(self.NoiseButton, QtCore.SIGNAL('pressed()'), self.addNoise)
+
       grid = QtGui.QGridLayout()
       grid.setSpacing(10)
 
       grid.addWidget(self.loadButton, 1, 0)
       grid.addWidget(self.loadEdit, 1, 1)
-      grid.addWidget(self.noiseEdit, 3, 1)
+      #grid.addWidget(self.noiseEdit, 3, 1)
       grid.addWidget(self.drawPathsButton, 2, 0)
-      grid.addWidget(authorEdit, 2, 1)
 
-      grid.addWidget(noiseLabel, 3, 0)
+      #grid.addWidget(noiseLabel, 3, 0)
       grid.addWidget(self.truncButton, 4, 0)
+      grid.addWidget(self.NoiseButton, 5, 0)
+
       grid.addWidget(self.canvas, 6, 1, 8, 1)
 
       self.setLayout(grid)
@@ -73,10 +76,17 @@ class MainWindow(QtGui.QWidget):
       l = 10
       pathSet.interpolate(l)
       trajecotries = deepcopy(pathSet)
+      self.canvas.repaint()
 
     def truncate(self):
       global trajecotries
       trajecotries.random_truncate()
+      self.canvas.repaint()
+
+    def addNoise(self):
+      global trajecotries, pathSet
+      params = [1]
+      trajecotries.add_noise(uniform_square_noise, params)
       self.canvas.repaint()
 
 
