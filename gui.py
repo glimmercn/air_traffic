@@ -60,7 +60,7 @@ class MainWindow(QtGui.QWidget):
 
       self.setLayout(grid)
 
-      self.setGeometry(200, 200, 1000, 1000)
+      self.setGeometry(100, 100, 1000, 1000)
       self.setWindowTitle('Trajectory')
       self.show()
 

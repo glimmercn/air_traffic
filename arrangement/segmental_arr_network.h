@@ -223,4 +223,42 @@ void generate_data(
     
 }
 
+void generate_duplicate_path(
+    char const *arrFilename,   //the file saves the arrangement.
+    unsigned int arrSize,      //the number of segments in the arrangement.
+    char const *pathFileName,  //the file saves the random path.
+    unsigned int uniquePath,    //the number of unique paths.
+    unsigned int nPath,        //the number of paths will be generated. It will be randomly generated from a group of different paths
+    Dtb_generator dtb_generator,
+    Path_generator path_generator,
+    unsigned int pLenMod,    //the length (the number of vertices) of a path is a random number in [0, 1, ..., pLenMod-1] plus pLenBase.
+    unsigned int pLenBase
+    )
+{
+  Arrangement_2 arr;
+  vector<Segment_2> segs = random_arrangement(arr, arrSize);
+  weighted_route(arr, dtb_generator);
+  
+  save_arrangement(segs, arrFilename);
+ 
+  vector<Path> paths;
 
+  for (int i = 0; i < uniquePath; i++) {
+    int nVertex = arr.number_of_vertices();
+    int nStep = rand() % nVertex;
+    Arrangement_2::Vertex_const_iterator vh = arr.vertices_begin();
+    push_iter(vh, nStep);
+
+    int nLen = rand() % pLenMod + pLenBase;
+    Path path = path_generator(arr, nLen, vh);
+    paths.push_back(path);
+  }
+
+  for (int i = uniquePath; i < nPath; i++) {
+    int idx = rand() % uniquePath;
+    paths.push_back(paths[idx]);
+  }
+
+  save_paths(paths, pathFileName);
+    
+}
