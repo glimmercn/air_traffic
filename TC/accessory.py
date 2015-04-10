@@ -5,7 +5,6 @@ Created on Jun 22, 2014
 '''
 
 import numpy
-from shapely.geometry import *
 from pylab import *
 import matplotlib.pyplot as plt
 
