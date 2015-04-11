@@ -96,18 +96,18 @@ class Ui_MainWindow(QtGui.QMainWindow):
     self.arg3Edt = QtGui.QLineEdit(self.verticalLayoutWidget_2)
     self.arg3Edt.setObjectName(_fromUtf8("arg3Edt"))
     self.gridLayout.addWidget(self.arg3Edt, 6, 1, 1, 1)
-    self.noise3 = QtGui.QRadioButton(self.verticalLayoutWidget_2)
-    self.noise3.setObjectName(_fromUtf8("noise3"))
-    self.gridLayout.addWidget(self.noise3, 3, 0, 1, 2)
-    self.noise2 = QtGui.QRadioButton(self.verticalLayoutWidget_2)
-    self.noise2.setObjectName(_fromUtf8("noise2"))
-    self.gridLayout.addWidget(self.noise2, 2, 0, 1, 2)
-    self.noise1 = QtGui.QRadioButton(self.verticalLayoutWidget_2)
-    self.noise1.setObjectName(_fromUtf8("noise1"))
-    self.gridLayout.addWidget(self.noise1, 1, 0, 1, 2)
-    self.nosieButton = QtGui.QPushButton(self.verticalLayoutWidget_2)
-    self.nosieButton.setObjectName(_fromUtf8("nosieButton"))
-    self.gridLayout.addWidget(self.nosieButton, 0, 0, 1, 2)
+    self.noise3rButton = QtGui.QRadioButton(self.verticalLayoutWidget_2)
+    self.noise3rButton.setObjectName(_fromUtf8("noise3"))
+    self.gridLayout.addWidget(self.noise3rButton, 3, 0, 1, 2)
+    self.noise2rButton = QtGui.QRadioButton(self.verticalLayoutWidget_2)
+    self.noise2rButton.setObjectName(_fromUtf8("noise2"))
+    self.gridLayout.addWidget(self.noise2rButton, 2, 0, 1, 2)
+    self.noise1rButton = QtGui.QRadioButton(self.verticalLayoutWidget_2)
+    self.noise1rButton.setObjectName(_fromUtf8("noise1"))
+    self.gridLayout.addWidget(self.noise1rButton, 1, 0, 1, 2)
+    self.addNoiseButton = QtGui.QPushButton(self.verticalLayoutWidget_2)
+    self.addNoiseButton.setObjectName(_fromUtf8("nosieButton"))
+    self.gridLayout.addWidget(self.addNoiseButton, 0, 0, 1, 2)
     self.label = QtGui.QLabel(self.verticalLayoutWidget_2)
     self.label.setObjectName(_fromUtf8("label"))
     self.gridLayout.addWidget(self.label, 4, 0, 1, 1)
@@ -138,10 +138,10 @@ class Ui_MainWindow(QtGui.QMainWindow):
     self.truncButton.setText(_translate("MainWindow", "Truncate", None))
     self.drawButton.setText(_translate("MainWindow", "Draw", None))
     self.colorcheckBox.setText(_translate("MainWindow", "Color", None))
-    self.noise3.setText(_translate("MainWindow", "Noise3", None))
-    self.noise2.setText(_translate("MainWindow", "Noise2", None))
-    self.noise1.setText(_translate("MainWindow", "Noise1", None))
-    self.nosieButton.setText(_translate("MainWindow", "Add Noise", None))
+    self.noise3rButton.setText(_translate("MainWindow", "Noise3", None))
+    self.noise2rButton.setText(_translate("MainWindow", "Noise2", None))
+    self.noise1rButton.setText(_translate("MainWindow", "Noise1", None))
+    self.addNoiseButton.setText(_translate("MainWindow", "Add Noise", None))
     self.label.setText(_translate("MainWindow", "arg1", None))
     self.label_2.setText(_translate("MainWindow", "arg2", None))
     self.label_3.setText(_translate("MainWindow", "arg3", None))
@@ -155,6 +155,8 @@ class Ui_MainWindow(QtGui.QMainWindow):
     self.connect(self.resetButton, QtCore.SIGNAL('pressed()'), self.reset)
     self.drawButton.clicked.connect(self.canvas.repaint)
     self.colorcheckBox.clicked.connect(self.changeColor)
+    self.addNoiseButton.clicked.connect(self.addNoise)
+
 
   def changeColor(self):
     self.canvas.iscolor = self.canvas.iscolor ^ True
@@ -190,7 +192,18 @@ class Ui_MainWindow(QtGui.QMainWindow):
     self.canvas.repaint()
 
   def addNoise(self):
-    global trajecotries, pathSet
+    global trajecotries
+    if trajecotries:
+      print(self.noise1rButton.isChecked())
+      if self.noise1rButton.isChecked():
+        try:
+          pr1 = float(self.arg1Edt.text())
+          trajecotries.add_noise(uniform_square_noise, [pr1])
+          self.canvas.repaint()
+        except ValueError:
+          QtGui.QMessageBox.warning(self, "Error", "need a number in arg1")
+
+
 
 class Canvas(QtGui.QWidget):
     def __init__(self, widget):
@@ -221,7 +234,6 @@ class Canvas(QtGui.QWidget):
         trj.gui_draw(qp)
 
 def main():
-
   app = QtGui.QApplication(sys.argv)
   ex = Ui_MainWindow()
   ex.show()
