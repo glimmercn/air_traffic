@@ -6,14 +6,20 @@
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
+__author__ = 'kan huang'
 
 from PyQt4 import QtCore, QtGui
-import sys, random
+import sys
+
 from TC.accessory import *
 from TC.NoiseModel import *
 from TC.Trajectory import *
 
 from copy import deepcopy
+from random import randint
+
+pathSet = None
+trajecotries= None
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -36,11 +42,11 @@ class Ui_MainWindow(QtGui.QMainWindow):
 
   def setupUi(self, MainWindow):
     MainWindow.setObjectName(_fromUtf8("MainWindow"))
-    MainWindow.resize(787, 631)
+    MainWindow.resize(1000, 850)
     self.centralwidget = QtGui.QWidget(MainWindow)
     self.centralwidget.setObjectName(_fromUtf8("centralwidget"))
-    self.canvas = QtGui.QWidget(self.centralwidget)
-    self.canvas.setGeometry(QtCore.QRect(190, 10, 581, 571))
+    self.canvas = Canvas(self.centralwidget)
+    self.canvas.setGeometry(QtCore.QRect(190, 0, 800, 800))
     self.canvas.setObjectName(_fromUtf8("canvas"))
     self.verticalLayout = QtGui.QVBoxLayout(self.canvas)
     self.verticalLayout.setMargin(0)
@@ -140,10 +146,19 @@ class Ui_MainWindow(QtGui.QMainWindow):
     self.label_2.setText(_translate("MainWindow", "arg2", None))
     self.label_3.setText(_translate("MainWindow", "arg3", None))
 
+
+
     self.connect(self.loadButton, QtCore.SIGNAL("pressed()"), self.loadPath)
     self.connect(self.drawButton, QtCore.SIGNAL('pressed()'), self.canvas.repaint)
     self.connect(self.InterpolateButton, QtCore.SIGNAL("pressed()"), self.interpolate)
     self.connect(self.truncButton, QtCore.SIGNAL('pressed()'), self.truncate)
+    self.connect(self.resetButton, QtCore.SIGNAL('pressed()'), self.reset)
+    self.drawButton.clicked.connect(self.canvas.repaint)
+    self.colorcheckBox.clicked.connect(self.changeColor)
+
+  def changeColor(self):
+    self.canvas.iscolor = self.canvas.iscolor ^ True
+    self.canvas.repaint()
 
   def loadPath(self):
     global trajecotries, pathSet
@@ -152,17 +167,58 @@ class Ui_MainWindow(QtGui.QMainWindow):
       return
     try:
       pathSet = read_trjs(pathFileName)
-    except IOError:
-      QtGui.QMessageBox.warning(self, "Error", "can't read" + pathFileName)
+    except ValueError:
+      QtGui.QMessageBox.warning(self, "Error:", "can't read" + pathFileName)
 
+    if pathSet:
+      trajecotries = deepcopy(pathSet)
+      self.canvas.repaint()
+
+  def reset(self):
+    global trajecotries, pathSet
     trajecotries = deepcopy(pathSet)
     self.canvas.repaint()
 
   def interpolate(self):
-    pass
+    if trajecotries:
+      trajecotries.interpolate(10)
+      self.canvas.repaint()
 
   def truncate(self):
-    pass
+    global trajecotries
+    trajecotries.random_truncate()
+    self.canvas.repaint()
+
+  def addNoise(self):
+    global trajecotries, pathSet
+
+class Canvas(QtGui.QWidget):
+    def __init__(self, widget):
+      self.iscolor = False
+      super(Canvas, self).__init__(widget)
+      self.initUI()
+
+    def initUI(self):
+        self.show()
+
+    def paintEvent(self, e):
+      global trajecotries
+      qp = QtGui.QPainter()
+      qp.begin(self)
+      if trajecotries:
+        self.drawTrj(qp)
+      qp.end()
+
+    def drawTrj(self, qp):
+      global trajecotries
+      pen = QtGui.QPen(QtCore.Qt.black, 1, QtCore.Qt.SolidLine)
+      qp.setPen(pen)
+
+      for trj in trajecotries.trjs:
+        if self.iscolor:
+          pen = QtGui.QPen(QtGui.QColor(randint(1, 255), randint(1, 255), randint(1, 255), 255), 1, QtCore.Qt.SolidLine)
+          qp.setPen(pen)
+        trj.gui_draw(qp)
 
 def main():
 
