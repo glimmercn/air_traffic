@@ -159,20 +159,27 @@ Path random_simple_path(const Arrangement_2& arr, int length, Vertex_const_handl
 {
   Arrangement_2::Halfedge_around_vertex_const_circulator curr;
   Path path; 
-  Vertex_const_handle last = vh;
   Vertex_const_handle nei;
   path.push_back(vh);
 
   for (int i = 0; i < length; i++) {
-    int TIMES = 10;
+    int TIMES = 7;
 
-    while (TIMES != 0) {
+    while (TIMES > 0) {
       nei = random_neighbour(vh);
-      if (nei != last) {
-        last = vh;
+      bool find_new = true;
+
+      for (int j = 0; j < path.size(); j++) {
+        if (path[j] == nei) {
+          find_new = false;
+          break;
+        }  
+      }
+
+      if (find_new) {
         vh = nei;
         path.push_back(vh);
-        break;
+        TIMES = -1;
       }
       TIMES--;
     }
