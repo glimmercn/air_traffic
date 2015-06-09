@@ -60,6 +60,12 @@ class Ui_MainWindow(QtGui.QMainWindow):
     self.loadButton = QtGui.QPushButton(self.verticalLayoutWidget_2)
     self.loadButton.setObjectName(_fromUtf8("loadButton"))
     self.verticalLayout_2.addWidget(self.loadButton)
+
+    self.saveButton = QtGui.QPushButton(self.verticalLayoutWidget_2)
+    self.saveButton.setObjectName(_fromUtf8("saveButton"))
+    self.saveButton.setText("Save")
+    self.verticalLayout_2.addWidget(self.saveButton)
+
     self.resetButton = QtGui.QPushButton(self.verticalLayoutWidget_2)
     self.resetButton.setObjectName(_fromUtf8("resetButton"))
     self.verticalLayout_2.addWidget(self.resetButton)
@@ -149,6 +155,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
 
 
     self.connect(self.loadButton, QtCore.SIGNAL("pressed()"), self.loadPath)
+    self.connect(self.saveButton, QtCore.SIGNAL("pressed()"), self.savePath)
     self.connect(self.drawButton, QtCore.SIGNAL('pressed()'), self.canvas.repaint)
     self.connect(self.InterpolateButton, QtCore.SIGNAL("pressed()"), self.interpolate)
     self.connect(self.truncButton, QtCore.SIGNAL('pressed()'), self.truncate)
@@ -175,6 +182,11 @@ class Ui_MainWindow(QtGui.QMainWindow):
     if pathSet:
       trajecotries = deepcopy(pathSet)
       self.canvas.repaint()
+
+  def savePath(self):
+    global trajecotries
+    trajecotries.save()
+
 
   def reset(self):
     global trajecotries, pathSet
