@@ -71,6 +71,16 @@ class Ui_MainWindow(QtGui.QMainWindow):
     self.saveWithTimeButton.setText("Save(add Time)")
     self.verticalLayout_2.addWidget(self.saveWithTimeButton)
 
+
+    self.filterLayout = QtGui.QGridLayout()
+    self.filterButton = QtGui.QPushButton("Filter")
+    self.filterLayout.addWidget(self.filterButton, 0, 0)
+    self.lowerEdit = QtGui.QLineEdit()
+    self.upperEdit = QtGui.QLineEdit()
+    self.filterLayout.addWidget(self.lowerEdit, 0, 1)
+    self.filterLayout.addWidget(self.upperEdit, 0, 2)
+    self.verticalLayout_2.addLayout(self.filterLayout)
+
     self.resetButton = QtGui.QPushButton(self.verticalLayoutWidget_2)
     self.resetButton.setObjectName(_fromUtf8("resetButton"))
     self.verticalLayout_2.addWidget(self.resetButton)
@@ -162,6 +172,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
     self.connect(self.loadButton, QtCore.SIGNAL("pressed()"), self.loadPath)
     self.connect(self.saveButton, QtCore.SIGNAL("pressed()"), self.savePath)
     self.connect(self.saveWithTimeButton, QtCore.SIGNAL("pressed()"), self.saveTimePath)
+    self.connect(self.filterButton, QtCore.SIGNAL("pressed()"), self.filterPath)
 
     self.connect(self.drawButton, QtCore.SIGNAL('pressed()'), self.canvas.repaint)
     self.connect(self.InterpolateButton, QtCore.SIGNAL("pressed()"), self.interpolate)
@@ -197,8 +208,22 @@ class Ui_MainWindow(QtGui.QMainWindow):
   '''Danny asked timestamps on the trajectory point data'''
   def saveTimePath(self):
     global trajecotries
-    MINPOINT = 30
-    trajecotries.save_add_time(MINPOINT)
+    trajecotries.save_add_time()
+
+  def filterPath(self):
+    global trajecotries
+    minpoint = int(self.lowerEdit.text())
+    maxpoint = int(self.upperEdit.text())
+
+    temp = []
+    for trj in trajecotries.trjs:
+      if minpoint <= len(trj.nodes) <= maxpoint:
+        temp.append(trj)
+
+    trajecotries.trjs = temp[:]
+    self.canvas.repaint()
+    print(len(temp))
+
 
 
   def reset(self):
@@ -235,6 +260,9 @@ class Canvas(QtGui.QWidget):
       self.iscolor = False
       super(Canvas, self).__init__(widget)
       self.initUI()
+
+
+
 
     def initUI(self):
         self.show()

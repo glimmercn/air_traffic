@@ -43,7 +43,7 @@ class Trj(object):
     # last = int((ends[1] * 0.5 + 0.5) * len(self.nodes))
     self.truncate(first, last)
 
-  def save(self, ID, fname, mode='a'):
+  def save(self, fname, mode='a'):
     ofile = open(fname, mode)
     nNode = len(self.nodes)
     ofile.write(str(nNode) + '\n')
@@ -54,7 +54,7 @@ class Trj(object):
 
     ofile.close()
 
-  def save_add_time(self, ID, minpoint, fname, mode = 'a'):
+  def save_add_time(self, ID, fname, mode = 'a'):
     TIMESTEP = datetime.timedelta(minutes=5)
     ofile = open(fname, mode)
     curr = datetime.datetime(2015, 1, 1, hour = randrange(24), minute=randrange(60))
@@ -89,6 +89,7 @@ class TrjSet(object):
     self.noise_type= 'no-noise'
 
   def save(self, filename = None):
+
     if filename == None:
       filename = str(len(self.trjs)) + '_' + 'trjs' + '_' + self.noise_type + '.dat'
     ofile = open(filename, 'w')
@@ -99,7 +100,7 @@ class TrjSet(object):
     for trj in self.trjs:
       trj.save(filename, 'a')
 
-  def save_add_time(self, minpoint = 30, maxpoint = 100, filename = None):
+  def save_add_time(self, filename = None):
     if filename == None:
       filename = str(len(self.trjs)) + '_' + 'trjs' + '_' + self.noise_type + '_with_timestamp.dat'
     # ofile = open(filename, 'w')
@@ -107,14 +108,11 @@ class TrjSet(object):
     # ofile.write(str(nPath) + '\n')
     # ofile.close()
     ID = 1
-    effective_count = 0
     for trj in self.trjs:
-      if maxpoint >= len(trj.nodes) >= minpoint:
-        effective_count += 1
-        trj.save_add_time(ID, minpoint, filename, 'a')
+      trj.save_add_time(ID, filename, 'a')
       ID += 1
 
-    print(effective_count)
+
 
 
   def interpolate(self, slen):

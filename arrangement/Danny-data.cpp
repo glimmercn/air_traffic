@@ -9,14 +9,14 @@ using namespace std;
 int main(int argc, const char *argv[])
 {
   generate_data(
-     "15.arr",
-     15,
-     "50000_ip_simple.paths",
-     50000,
+     "20.arr",
+     20,
+     "100000_ip_simple.paths",
+     100000,
      one_major_dtb,
      random_simple_path,
-     7,
-     4);
+     9,
+     5);
   return 0;
 }
 
