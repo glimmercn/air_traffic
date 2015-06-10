@@ -5,6 +5,9 @@ import matplotlib.pyplot as plt
 import TC.accessory as acc
 from TC.Arrangement import Arrangement
 from PyQt4 import QtGui, QtCore
+import datetime
+from random import randrange
+
 
 class Trj(object):
   '''
@@ -40,7 +43,7 @@ class Trj(object):
     # last = int((ends[1] * 0.5 + 0.5) * len(self.nodes))
     self.truncate(first, last)
 
-  def save(self, fname, mode='a'):
+  def save(self, ID, fname, mode='a'):
     ofile = open(fname, mode)
     nNode = len(self.nodes)
     ofile.write(str(nNode) + '\n')
@@ -49,6 +52,16 @@ class Trj(object):
       x, y = self.nodes[i]
       ofile.write(str(x) + ' ' + str(y) + '\n')
 
+    ofile.close()
+
+  def save_add_time(self, ID, minpoint, fname, mode = 'a'):
+    TIMESTEP = datetime.timedelta(minutes=5)
+    ofile = open(fname, mode)
+    curr = datetime.datetime(2015, 1, 1, hour = randrange(24), minute=randrange(60))
+    for node in self.nodes:
+      x, y = node
+      ofile.write(str(ID) + ' ' + str(curr) + ' ' + str(x) + ' ' + str(y) + '\n')
+      curr += TIMESTEP
     ofile.close()
 
   def interpolate(self, slen):
@@ -61,6 +74,7 @@ class Trj(object):
       n = int(l/slen)
       trj += acc.interpolate_edge(p1, p2, n)
       trj.append(p2)
+
     self.nodes = trj
 
   def add_noise(self, noise_func, params):
@@ -72,7 +86,7 @@ class Trj(object):
 class TrjSet(object):
   def __init__(self, trjs):
     self.trjs = trjs
-    self.noise_type= None
+    self.noise_type= 'no-noise'
 
   def save(self, filename = None):
     if filename == None:
@@ -84,6 +98,24 @@ class TrjSet(object):
 
     for trj in self.trjs:
       trj.save(filename, 'a')
+
+  def save_add_time(self, minpoint = 30, maxpoint = 100, filename = None):
+    if filename == None:
+      filename = str(len(self.trjs)) + '_' + 'trjs' + '_' + self.noise_type + '_with_timestamp.dat'
+    # ofile = open(filename, 'w')
+    # nPath = len(self.trjs)
+    # ofile.write(str(nPath) + '\n')
+    # ofile.close()
+    ID = 1
+    effective_count = 0
+    for trj in self.trjs:
+      if maxpoint >= len(trj.nodes) >= minpoint:
+        effective_count += 1
+        trj.save_add_time(ID, minpoint, filename, 'a')
+      ID += 1
+
+    print(effective_count)
+
 
   def interpolate(self, slen):
     for trj in self.trjs:
@@ -97,6 +129,9 @@ class TrjSet(object):
   def visualize(self, m, c):
     for trj in self.trjs:
       trj.draw(m, c)
+
+
+
 
   def random_truncate(self):
     for trj in self.trjs:

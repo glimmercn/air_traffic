@@ -66,6 +66,11 @@ class Ui_MainWindow(QtGui.QMainWindow):
     self.saveButton.setText("Save")
     self.verticalLayout_2.addWidget(self.saveButton)
 
+    self.saveWithTimeButton = QtGui.QPushButton(self.verticalLayoutWidget_2)
+    self.saveWithTimeButton.setObjectName(_fromUtf8("saveWithTimeButton"))
+    self.saveWithTimeButton.setText("Save(add Time)")
+    self.verticalLayout_2.addWidget(self.saveWithTimeButton)
+
     self.resetButton = QtGui.QPushButton(self.verticalLayoutWidget_2)
     self.resetButton.setObjectName(_fromUtf8("resetButton"))
     self.verticalLayout_2.addWidget(self.resetButton)
@@ -156,6 +161,8 @@ class Ui_MainWindow(QtGui.QMainWindow):
 
     self.connect(self.loadButton, QtCore.SIGNAL("pressed()"), self.loadPath)
     self.connect(self.saveButton, QtCore.SIGNAL("pressed()"), self.savePath)
+    self.connect(self.saveWithTimeButton, QtCore.SIGNAL("pressed()"), self.saveTimePath)
+
     self.connect(self.drawButton, QtCore.SIGNAL('pressed()'), self.canvas.repaint)
     self.connect(self.InterpolateButton, QtCore.SIGNAL("pressed()"), self.interpolate)
     self.connect(self.truncButton, QtCore.SIGNAL('pressed()'), self.truncate)
@@ -187,6 +194,12 @@ class Ui_MainWindow(QtGui.QMainWindow):
     global trajecotries
     trajecotries.save()
 
+  '''Danny asked timestamps on the trajectory point data'''
+  def saveTimePath(self):
+    global trajecotries
+    MINPOINT = 30
+    trajecotries.save_add_time(MINPOINT)
+
 
   def reset(self):
     global trajecotries, pathSet
@@ -195,7 +208,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
 
   def interpolate(self):
     if trajecotries:
-      trajecotries.interpolate(10)
+      trajecotries.interpolate(5)
       self.canvas.repaint()
 
   def truncate(self):
